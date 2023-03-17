@@ -1,0 +1,28 @@
+<mat-card style=" display: flex; flex-direction: column; align-items: center;">
+  <mat-card-header style="display: flex; flex-direction: column; align-items: center;">
+    <mat-icon >account_circle</mat-icon>
+    <mat-card-title>Register User</mat-card-title>
+  </mat-card-header>
+
+
+  <form (ngSubmit)="register()" class="register-form">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Name" [(ngModel)]="user.name" name="name" required>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" required>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <input matInput type="password" placeholder="Password" [(ngModel)]="user.password" name="password" required>
+    </mat-form-field>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <p>
+      <button type="submit" mat-raised-button color="primary" class="full-width">Register</button>
+    </p>
+  </form>
+
+  <p>Already have an account? <a routerLink="/login">Log in here!</a></p> <!-- Update href to your login page route -->
+</mat-card>

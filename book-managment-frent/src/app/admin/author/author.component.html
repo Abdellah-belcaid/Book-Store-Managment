@@ -1,0 +1,62 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-subtitle>Author List</mat-card-subtitle>
+    <mat-card-title></mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-table [dataSource]="Authors">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+        <mat-cell *matCellDef="let author">{{ author.id }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+        <mat-cell *matCellDef="let author">{{ author.firstName }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+        <mat-cell *matCellDef="let author">{{ author.lastName }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="birthDate">
+        <mat-header-cell *matHeaderCellDef>Birth Date</mat-header-cell>
+        <mat-cell *matCellDef="let author">{{ author.birthDate | date }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="address">
+        <mat-header-cell *matHeaderCellDef>Address</mat-header-cell>
+        <mat-cell *matCellDef="let author" title="{{ author.address }}">{{ author.address }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+        <mat-cell *matCellDef="let author">
+          <button mat-icon-button (click)="onOpenAuthorModal(author,'edit')">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDeleteAuthor(author.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row
+        *matHeaderRowDef="['id', 'firstName', 'lastName', 'birthDate', 'address', 'action']"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: ['id', 'firstName', 'lastName', 'birthDate', 'address', 'action']"></mat-row>
+
+    </mat-table>
+  </mat-card-content>
+
+
+  <mat-card-footer>
+    <mat-card-actions>
+      <button mat-button (click)="onOpenAuthorModal(null,'add')">add a new author</button>
+    </mat-card-actions>
+  </mat-card-footer>
+
+</mat-card>

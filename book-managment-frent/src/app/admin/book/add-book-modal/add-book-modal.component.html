@@ -1,0 +1,55 @@
+<!-- book.component.html -->
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>New Book</mat-card-title>
+  </mat-card-header>
+
+  <form #bookForm="ngForm" (ngSubmit)="onAddBook(bookForm)">
+    <mat-card-content>
+  <!-- Title field -->
+  <mat-form-field appearance="fill">
+    <mat-label>Title</mat-label>
+    <input matInput name="title" placeholder="Title" [(ngModel)]="newBook.title" required>
+  </mat-form-field>
+
+  <!-- Price field -->
+  <mat-form-field appearance="fill">
+    <mat-label>Price</mat-label>
+    <input matInput name="price" placeholder="Price" [(ngModel)]="newBook.price" type="number" required>
+  </mat-form-field>
+
+  <!-- Amount field -->
+  <mat-form-field appearance="fill">
+    <mat-label>Amount</mat-label>
+    <input matInput name="amount" placeholder="Amount" [(ngModel)]="newBook.amount" type="number" required>
+  </mat-form-field>
+
+  <!-- Publish Date field -->
+  <mat-form-field appearance="fill">
+    <mat-label>Publish Date</mat-label>
+    <input matInput [matDatepicker]="picker" name="publishDate" [(ngModel)]="newBook.publishDate" placeholder="Publish Date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Author</mat-label>
+    <mat-select name="author" [(ngModel)]="newBook.author!" required>
+      <mat-option *ngFor="let author of Authors" [value]="author">
+        {{ author.firstName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+</mat-card-content>
+
+<mat-card-actions>
+  <button mat-raised-button color="primary" [disabled]="!bookForm.valid" type="submit">Submit</button>
+  <button mat-raised-button color="accent" type="reset">Reset</button>
+</mat-card-actions>
+
+  </form>
+
+</mat-card>

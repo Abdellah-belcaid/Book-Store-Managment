@@ -1,0 +1,44 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Add Author</mat-card-title>
+  </mat-card-header>
+
+  <form #authorForm="ngForm" (ngSubmit)="onAddAuthor(authorForm)">
+    <mat-card-content>
+      <p>
+        <!-- First Name field -->
+        <mat-form-field>
+          <input matInput name="firstName" placeholder="First Name" [(ngModel)]="newAuthor.firstName" required>
+        </mat-form-field>
+
+        <!-- Last Name field -->
+        <mat-form-field>
+          <input matInput name="lastName" placeholder="Last Name" [(ngModel)]="newAuthor.lastName" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <!-- Birth Date field -->
+
+        <mat-form-field appearance="fill">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" name="birthDate" [(ngModel)]="newAuthor.birthDate" required>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </p>
+      <p>
+        <!-- Address field -->
+        <mat-form-field>
+          <input matInput name="address" placeholder="Address" [(ngModel)]="newAuthor.address" required>
+        </mat-form-field>
+      </p>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button color="primary" type="submit" [disabled]="authorForm.invalid">Submit</button>
+      <button mat-button type="reset">Reset</button>
+    </mat-card-actions>
+  </form>
+
+</mat-card>

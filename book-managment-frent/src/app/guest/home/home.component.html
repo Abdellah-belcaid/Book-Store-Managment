@@ -1,0 +1,27 @@
+<!-- <div *ngIf="infoMessage">
+  <mat-alert color="primary"><strong>{{ infoMessage }}</strong></mat-alert>
+</div>
+
+<div *ngIf="errorMessage">
+  <mat-alert color="warn"><strong>{{ errorMessage }}</strong></mat-alert>
+</div> -->
+
+<mat-grid-list cols="6" rowHeight="">
+  <mat-grid-tile *ngFor="let book of books">
+    <mat-card color="">
+      <mat-card-header>
+        <div mat-card-avatar><mat-icon>book</mat-icon></div>
+        <mat-card-title>{{ book.title }}</mat-card-title>
+        <mat-card-subtitle>{{ book.author.firstName }} {{ book.author.lastName }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>{{ book.price | currency:"USD"}}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="purchase(book)">Buy Now</button>
+        <button mat-icon-button><mat-icon>favorite_border</mat-icon></button>
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

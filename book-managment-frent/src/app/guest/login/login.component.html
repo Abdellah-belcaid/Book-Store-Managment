@@ -1,0 +1,23 @@
+<mat-card style=" display: flex; flex-direction: column; align-items: center;">
+  <mat-card-header style="display: flex; flex-direction: column; align-items: center;">
+    <mat-icon>lock</mat-icon>
+    <mat-card-title>Login</mat-card-title>
+  </mat-card-header>
+
+  <form (ngSubmit)="login()" class="login-form">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" required>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <input matInput type="password" placeholder="Password" [(ngModel)]="user.password" name="password" required>
+    </mat-form-field>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <p>
+      <button type="submit" mat-raised-button color="primary" class="small-width">Login</button>
+    </p>
+  </form>
+
+  <p>Don't have an account yet? <a routerLink="/register">Register here!</a></p> <!-- Update href to your register page route -->
+</mat-card>

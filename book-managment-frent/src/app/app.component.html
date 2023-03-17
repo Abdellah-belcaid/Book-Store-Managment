@@ -1,0 +1,44 @@
+<mat-toolbar color="primary">
+  <div style="display: flex;">
+
+    <button mat-button [matMenuTriggerFor]="menu" *ngIf="isAdmin()">Admin</button>
+    <mat-menu #menu="matMenu">
+      <a mat-button routerLink="/admin" routerLinkActive="active-link" *ngIf="isAdmin()">Admin</a>
+      <a mat-button routerLink="/admin/books" routerLinkActive="active-link">Books</a>
+      <a mat-button routerLink="/admin/authors" routerLinkActive="active-link">Authors</a>
+
+    </mat-menu>
+
+    <a mat-button routerLink="/" routerLinkActive="active-link">Home</a>
+
+
+
+    <a mat-button routerLink="/login" routerLinkActive="active-link" *ngIf="!currentUser?.id">Sign In</a>
+    <a mat-button routerLink="/register" routerLinkActive="active-link" *ngIf="!currentUser?.id">Sign Up</a>
+
+    <span class="example-spacer"></span>
+
+    <a mat-button routerLink="/profile" routerLinkActive="active-link" *ngIf="currentUser?.id">
+      <mat-icon>account_circle</mat-icon>{{currentUser.username}}
+    </a>
+
+    <a mat-button (click)="logOut()" *ngIf="currentUser?.id">
+      Sign Out
+    </a>
+  </div>
+</mat-toolbar>
+
+
+<p>
+  <ng-container class="conatainer">
+    <router-outlet></router-outlet>
+  </ng-container>
+</p>
+
+
+
+<!--<mat-toolbar color="primary" class="footer" style="left: 0;bottom: 0;width: 100%;">
+    <div class="footer-content">
+      <p class="center">© 2022 All Rights Reserved. Created with ❤️ by @aizen</p>
+    </div>
+  </mat-toolbar>-->

@@ -1,0 +1,17 @@
+.error-message {
+  margin-top: 5px;
+  color: red;
+}
+
+.register-form {
+  padding: 16px;
+}
+.card {
+  width: 200px;
+  margin: auto;
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
