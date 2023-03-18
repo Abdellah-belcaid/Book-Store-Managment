@@ -1,0 +1,25 @@
+.user-info-card,
+.purchase-item-card {
+  padding: 24px;
+}
+
+.user-info-card p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.mat-table {
+  width: 100%;
+}
+
+.mat-header-row th,
+.mat-row td {
+  text-align: center;
+}
+
+.total-price {
+  font-weight: bold;
+}
+.card-container {
+  margin: 48px; /*increased from 36px*/
+}

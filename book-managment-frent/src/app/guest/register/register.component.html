@@ -5,7 +5,7 @@
   </mat-card-header>
 
 
-  <form (ngSubmit)="register()" class="register-form">
+  <form (ngSubmit)="register($event)" class="register-form">
     <mat-form-field class="full-width">
       <input matInput placeholder="Name" [(ngModel)]="user.name" name="name" required>
     </mat-form-field>
@@ -14,8 +14,13 @@
       <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" required>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <input matInput type="password" placeholder="Password" [(ngModel)]="user.password" name="password" required>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Enter your password</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="user.password" name="password" required>
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
     </mat-form-field>
 
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>

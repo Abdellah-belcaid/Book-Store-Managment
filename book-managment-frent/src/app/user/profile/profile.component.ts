@@ -19,17 +19,13 @@ export class ProfileComponent implements OnInit {
     private purchaseService: PurchaseService
   ) {
     this.currentUser = this.authenticationService.currentUserValue;
-
   }
 
   ngOnInit(): void {
     this.purchaseService.getAllPurchaseItems().subscribe(data => {
       console.log(data);
-
       this.purchaseItems = data;
       this.totalPrice = this.purchaseItems.reduce((acc, item) => acc + item.price, 0);
-      console.log(data);
-      console.log(this.totalPrice);
     });
   }
 

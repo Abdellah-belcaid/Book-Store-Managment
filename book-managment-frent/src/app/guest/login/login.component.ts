@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -10,31 +10,53 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class LoginComponent implements OnInit {
 
-  user: User = new User();
-  errorMessage: string = '';
+  user: User;
+  errorMessage: string;
+  hidePassword: boolean;
 
-  constructor(private authenticationService: AuthenticationService, private router: Router) {
-
+  constructor(
+    private authenticationService: AuthenticationService,
+    private router: Router,
+    private zone: NgZone
+  ) {
+    this.user = new User();
+    this.errorMessage = '';
+    this.hidePassword = true;
   }
+
   ngOnInit(): void {
     if (this.authenticationService.currentUserValue?.id) {
-      this.router.navigate(['/profile']);
+      this.zone.run(() => {
+        this.router.navigate(['/profile']); // Encapsulate navigation in zone.run()
+      });
       return;
     }
   }
 
-  login() {
+  login(event: Event) {
+    event.preventDefault(); // Prevent form submission if fields are empty
+
+    if (!this.user.username || !this.user.password) {
+      this.errorMessage = 'Please fill out both username and password fields.';
+      return;
+    }
+
     this.authenticationService.login(this.user).subscribe(
       data => {
-        this.router.navigate(['/profile']);
+        this.zone.run(() => {
+          this.router.navigate(['/profile']); // Encapsulate navigation in zone.run()
+        });
         console.log(data);
       },
       err => {
-        this.errorMessage = "Username or password is incorrect !";
+        if (err.status === 401) {
+          this.errorMessage = 'Invalid username or password!';
+        } else {
+          this.errorMessage = 'An unexpected error occurred. Please try again later.';
+        }
         console.log(err);
-        console.log(err.message);
-      })
+      }
+    );
   }
-
 
 }

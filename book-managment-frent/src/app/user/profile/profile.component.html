@@ -1,41 +1,59 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>User Profile</mat-card-title>
-  </mat-card-header>
+<div class="card-container">
+  <p>
+    <mat-card class="user-info-card">
+      <mat-card-header>
+        <mat-card-title>User Profile</mat-card-title>
+      </mat-card-header>
 
-  <!-- User Information -->
-  <mat-card-content>
-    <p>Username: {{ currentUser.username }}</p>
-  </mat-card-content>
+      <mat-card-content>
+        <p>Username: {{ currentUser.name }}</p>
+      </mat-card-content>
+    </mat-card>
+  </p>
+  <mat-card class="purchase-item-card">
+    <mat-card-header>
+      <mat-card-title>Purchase Items</mat-card-title>
+    </mat-card-header>
 
-  <!-- Purchase Items Table -->
-  <table mat-table [dataSource]="purchaseItems" class="mat-elevation-z8">
+    <mat-card-content>
 
-    <!-- Column definitions using ng-container -->
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>Title</th>
-      <td mat-cell *matCellDef="let item">{{ item.title }}</td>
-    </ng-container>
+      <!-- Purchase Items Table -->
+      <table mat-table [dataSource]="purchaseItems" class="mat-elevation-z8">
 
-    <ng-container matColumnDef="price">
-      <th mat-header-cell *matHeaderCellDef>Price</th>
-      <td mat-cell *matCellDef="let item">{{ item.price | currency:'USD' }}</td>
-    </ng-container>
+        <!-- Column definitions using ng-container -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let item">{{ item.title }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="purchaseTime">
-      <th mat-header-cell *matHeaderCellDef>Purchase Time</th>
-      <td mat-cell *matCellDef="let item">{{ item.purchaseTime | date: 'medium' }}</td>
-    </ng-container>
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let item">{{ item.price | currency:'USD' }}</td>
+        </ng-container>
 
-    <!-- Set row header and keep placeholders for cells by adding *matRowDef and *matHeaderRowDef -->
-    <tr mat-header-row *matHeaderRowDef="['title', 'price', 'purchaseTime']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['title', 'price', 'purchaseTime']"></tr>
+        <ng-container matColumnDef="purchaseTime">
+          <th mat-header-cell *matHeaderCellDef>Purchase Time</th>
+          <td mat-cell *matCellDef="let item">{{ item.purchaseTime | date: 'medium' }}</td>
+        </ng-container>
 
-    <!-- Display Total Price -->
-    <tr>
-      <td colspan="2" class="total-price">Total:</td>
-      <td class="total-price">{{ totalPrice | currency:'USD' }}</td>
-    </tr>
+        <!-- Set row header and keep placeholders for cells by adding *matRowDef and *matHeaderRowDef -->
+        <tr mat-header-row *matHeaderRowDef="['title', 'price', 'purchaseTime']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['title', 'price', 'purchaseTime']"></tr>
 
-  </table>
-</mat-card>
+        <!-- Display Total Price -->
+
+
+      </table>
+
+    </mat-card-content>
+
+    <mat-card-footer>
+      <mat-card-actions>
+        <p>
+          <td colspan="2" class="total-price">Total:</td>
+          <td class="total-price">{{ totalPrice | currency:'USD' }}</td>
+        </p>
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+</div>

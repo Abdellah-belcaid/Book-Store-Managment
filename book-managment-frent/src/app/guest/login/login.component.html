@@ -4,13 +4,20 @@
     <mat-card-title>Login</mat-card-title>
   </mat-card-header>
 
-  <form (ngSubmit)="login()" class="login-form">
+  <form (ngSubmit)="login($event)" class="login-form">
+
+
     <mat-form-field class="full-width">
       <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" required>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <input matInput type="password" placeholder="Password" [(ngModel)]="user.password" name="password" required>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Enter your password</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="user.password" name="password" required>
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
     </mat-form-field>
 
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
@@ -19,5 +26,6 @@
     </p>
   </form>
 
-  <p>Don't have an account yet? <a routerLink="/register">Register here!</a></p> <!-- Update href to your register page route -->
+  <p>Don't have an account yet? <a routerLink="/register">Register here!</a></p>
+  <!-- Update href to your register page route -->
 </mat-card>
