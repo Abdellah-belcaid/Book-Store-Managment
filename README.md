@@ -42,7 +42,7 @@ The following features are implemented in this application:
 
 - User authentication using JWT  
 - Authorization and role-based access control using Spring Security   
-- CRUD operations for books and categories   
+- CRUD operations for books and authors   
 - Ordering books    
 - Responsive UI using Angular Material  
 ### Technologies Used   
