@@ -21,7 +21,7 @@ Follow these steps to install and run the application:
 
 1. Clone the repository:   
 ```  
-git clone https://github.com/<your-github-username>/book-store-management.git
+git clone https://github.com/Abdellah-belcaid/book-store-management.git
 ```    
 2. Navigate to the backend directory and run the following command to start the Spring Boot application:   
 ```  
