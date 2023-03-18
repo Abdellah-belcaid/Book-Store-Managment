@@ -23,19 +23,19 @@ Follow these steps to install and run the application:
 ```  
 git clone https://github.com/<your-github-username>/book-store-management.git
 ```    
-Navigate to the backend directory and run the following command to start the Spring Boot application:   
+2. Navigate to the backend directory and run the following command to start the Spring Boot application:   
 ```  
 ./mvnw spring-boot:run   
 ```    
-Navigate to the frontend directory and run the following command to install the required packages:   
+3. Navigate to the frontend directory and run the following command to install the required packages:   
 ```    
 npm install   
 ```    
-After the packages are installed, run the following command to start the Angular application:   
+4. After the packages are installed, run the following command to start the Angular application:   
 ```    
 ng serve   
 ```    
-Open your browser and navigate to http://localhost:4200 to access the application.     
+5. Open your browser and navigate to http://localhost:4200 to access the application.     
 
 ### Features   
 The following features are implemented in this application:    
@@ -57,10 +57,10 @@ The following technologies and frameworks are used in this application:
 ### Contributing  
 If you want to contribute to this project, please follow these steps:
 
-Fork the repository  
-Create a new branch (git checkout -b feature/your-feature)  
-Make changes and commit them (git commit -m 'Add your feature')   
-Push the changes to your branch (git push origin feature/your-feature)   
-Create a pull request   
+1. Fork the repository  
+2. Create a new branch (git checkout -b feature/your-feature)  
+3. Make changes and commit them (git commit -m 'Add your feature')   
+4. Push the changes to your branch (git push origin feature/your-feature)   
+5. Create a pull request   
 # License  
 - This project is licensed under the MIT License - see the LICENSE file for details.
