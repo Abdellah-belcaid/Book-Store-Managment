@@ -8,19 +8,21 @@
       <input type="hidden" name="id" [(ngModel)]="EditedAuthor.id">
       <p>
         <!-- First Name field -->
-        <mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Enter your fisrt name</mat-label>
           <input matInput name="firstName" placeholder="First Name" [(ngModel)]="EditedAuthor.firstName" required>
         </mat-form-field>
 
         <!-- Last Name field -->
-        <mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Enter your last name</mat-label>
           <input matInput name="lastName" placeholder="Last Name" [(ngModel)]="EditedAuthor.lastName" required>
         </mat-form-field>
       </p>
       <p>
         <!-- Birth Date field -->
 
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="outline">
           <mat-label>Choose a date</mat-label>
           <input matInput [matDatepicker]="picker" name="birthDate" [(ngModel)]="EditedAuthor.birthDate" required>
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -29,7 +31,8 @@
       </p>
       <p>
         <!-- Address field -->
-        <mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Enter your address</mat-label>
           <input matInput name="address" placeholder="Address" [(ngModel)]="EditedAuthor.address" required>
         </mat-form-field>
       </p>

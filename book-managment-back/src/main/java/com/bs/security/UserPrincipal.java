@@ -10,19 +10,17 @@ import com.bs.model.Role;
 import com.bs.model.User;
 import com.bs.util.SecurityUtils;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserPrincipal implements UserDetails {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String username;

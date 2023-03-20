@@ -1,33 +1,39 @@
-<mat-card style=" display: flex; flex-direction: column; align-items: center;">
-  <mat-card-header style="display: flex; flex-direction: column; align-items: center;">
-    <mat-icon >account_circle</mat-icon>
-    <mat-card-title>Register User</mat-card-title>
-  </mat-card-header>
+<div class="container mt-4">
+  <mat-card style=" display: flex; flex-direction: column; align-items: center;">
+    <mat-card-header style="display: flex; flex-direction: column; align-items: center;">
+      <mat-icon>account_circle</mat-icon>
+      <mat-card-title>Register User</mat-card-title>
+    </mat-card-header>
 
 
-  <form (ngSubmit)="register($event)" class="register-form">
-    <mat-form-field class="full-width">
-      <input matInput placeholder="Name" [(ngModel)]="user.name" name="name" required>
-    </mat-form-field>
+    <form (ngSubmit)="register($event)" class="register-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Enter your name</mat-label>
+        <input matInput placeholder="Name" [(ngModel)]="user.name" name="name" required>
+      </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" required>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Enter your username</mat-label>
+        <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" required>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Enter your password</mat-label>
-      <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="user.password" name="password" required>
-      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hidePassword">
-        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Enter your password</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="password" [(ngModel)]="user.password" name="password"
+          required>
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
 
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-    <p>
-      <button type="submit" mat-raised-button color="primary" class="full-width">Register</button>
-    </p>
-  </form>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      <p>
+        <button type="submit" mat-raised-button color="primary" class="small-width">Register </button>
+      </p>
+    </form>
 
-  <p>Already have an account? <a routerLink="/login">Log in here!</a></p> <!-- Update href to your login page route -->
-</mat-card>
+    <p>Already have an account? <a routerLink="/login">Log in here!</a></p>
+    <!-- Update href to your login page route -->
+  </mat-card>
+</div>

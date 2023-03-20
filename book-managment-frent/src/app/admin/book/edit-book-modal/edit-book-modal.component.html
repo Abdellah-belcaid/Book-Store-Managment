@@ -8,49 +8,51 @@
   <form #bookForm="ngForm" (ngSubmit)="onEditBook(bookForm)">
     <mat-card-content>
       <input type="hidden" name="id" [(ngModel)]="EditedBook.id">
-      <!-- Title field -->
-      <mat-form-field appearance="fill">
-        <mat-label>Title</mat-label>
-        <input matInput name="title" placeholder="Title" [(ngModel)]="EditedBook.title" required>
-      </mat-form-field>
+      <p>
+        <!-- Title field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput name="title" placeholder="Title" [(ngModel)]="EditedBook.title" required>
+        </mat-form-field>
 
-      <!-- Price field -->
-      <mat-form-field appearance="fill">
-        <mat-label>Price</mat-label>
-        <input matInput name="price" placeholder="Price" [(ngModel)]="EditedBook.price" type="number" required>
-      </mat-form-field>
+        <!-- Price field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input matInput name="price" placeholder="Price" [(ngModel)]="EditedBook.price" type="number" required>
+        </mat-form-field>
 
-      <!-- Amount field -->
-      <mat-form-field appearance="fill">
-        <mat-label>Amount</mat-label>
-        <input matInput name="amount" placeholder="Amount" [(ngModel)]="EditedBook.amount" type="number" required>
-      </mat-form-field>
-
-      <!-- Publish Date field -->
-      <mat-form-field appearance="fill">
-        <mat-label>Publish Date</mat-label>
-        <input matInput [matDatepicker]="picker" name="publishDate" [(ngModel)]="EditedBook.publishDate"
+        <!-- Amount field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Amount</mat-label>
+          <input matInput name="amount" placeholder="Amount" [(ngModel)]="EditedBook.amount" type="number" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <!-- Publish Date field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Publish Date</mat-label>
+          <input matInput [matDatepicker]="picker" name="publishDate" [(ngModel)]="EditedBook.publishDate"
           placeholder="Publish Date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Author</mat-label>
-        <mat-select name="author" [(ngModel)]="EditedBook.author!" required>
-          <mat-option *ngFor="let author of Authors" [value]="author"  selected="author.id === EditedBook.author?.id">
-            {{ author.firstName }} {{ author.firstName }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Author</mat-label>
+          <mat-select name="author" [(ngModel)]="EditedBook.author!" required>
+            <mat-option *ngFor="let author of Authors" [value]="author"  selected="author.id === EditedBook.author?.id">
+              {{ author.firstName }} {{ author.firstName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </p>
 
     </mat-card-content>
-
     <mat-card-actions>
-      <button mat-raised-button color="primary" [disabled]="!bookForm.valid" type="submit">Submit</button>
-      <button mat-raised-button color="accent" type="reset">Reset</button>
+      <button mat-button color="primary" type="submit" [disabled]="bookForm.invalid">Submit</button>
+      <button mat-button type="reset">Reset</button>
     </mat-card-actions>
+
 
   </form>
 

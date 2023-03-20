@@ -17,7 +17,14 @@ import { AuthorComponent } from '../../author/author.component';
 })
 export class AddBookModalComponent implements OnInit {
   public Authors!: Author[];
-
+  public newBook: Book = {
+    id: null as any,
+    title: null as any,
+    price: null as any,
+    publishDate: null as any,
+    amount: null as any,
+    author: null as any
+  };
 
 
   constructor(
@@ -38,15 +45,8 @@ export class AddBookModalComponent implements OnInit {
   }
 
 
-  // New book object
-  public newBook: Book = {
-    id: null as any,
-    title: null as any,
-    price: null as any,
-    publishDate: null as any,
-    amount: null as any,
-    author: null as any
-  };
+
+
 
   public onAddBook(bookForm: any): void {
     console.log(bookForm.value);

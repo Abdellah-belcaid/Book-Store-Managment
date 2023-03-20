@@ -18,7 +18,7 @@ export class BookService extends RequestBaseService {
   }
 
   public getBooks(): Observable<Book[]> {
-    return this.http.get<Book[]>(API_URL);
+    return this.http.get<Book[]>(API_URL, { headers: this.getHeaders });
   }
 
   public addBook(book: Book): Observable<Book> {

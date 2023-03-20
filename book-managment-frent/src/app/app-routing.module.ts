@@ -16,7 +16,7 @@ import { AuthorComponent } from './admin/author/author.component';
 
 const routes: Routes = [
 
-  { path: '', redirectTo: "home", pathMatch: "full" },
+  { path: '', redirectTo: "home" , pathMatch: "prefix"},
   { path: 'home', component: HomeComponent },
 
 
@@ -38,8 +38,10 @@ const routes: Routes = [
   { path: 'admin/books', component: BookComponent },
   { path: 'admin/authors', component: AuthorComponent },
 
-  { path: '404', component: NotFoundComponent },
+
   { path: '401', component: UnauthorizedComponent },
+  { path: '**', redirectTo: '404', pathMatch: "full" },
+  { path: '404', component: NotFoundComponent }
 ];
 
 

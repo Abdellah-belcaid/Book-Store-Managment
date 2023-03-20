@@ -18,11 +18,11 @@ export class AuthorService extends RequestBaseService {
   }
 
   public getAuthors(): Observable<Author[]> {
-    return this.http.get<Author[]>(API_URL);
+    return this.http.get<Author[]>(API_URL,{ headers: this.getHeaders });
   }
 
   public getAuthorById(id: number): Observable<Author> {
-    return this.http.get<Author>(API_URL + `/${id}`);
+    return this.http.get<Author>(API_URL + `/${id}` ,{ headers: this.getHeaders });
   }
 
   public addAuthor(author: Author): Observable<Author> {
