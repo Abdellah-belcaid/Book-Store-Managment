@@ -1,59 +1,87 @@
 <div class="card-container">
-  <p>
-    <mat-card class="user-info-card">
-      <mat-card-header>
-        <mat-card-title>User Profile</mat-card-title>
-      </mat-card-header>
+  <div class="row">
+    <div class="col col-md-9 col-lg-7 col-xl-5">
+      <div class="card" style="border-radius: 15px;">
+        <div class="card-body p-4">
+          <div class="d-flex text-black">
+            <div class="flex-shrink-0">
+              <img src="data:image/png;base64,{{currentUser.imageData}}" alt="User Image" class="img-fluid"
+                style="width: 160px; border-radius: 10px;">
+            </div>
+            <div class="flex-grow-1 ms-3">
+              <h5 class="mb-1">{{ currentUser.name }}</h5>
+              <p class="mb-2 pb-1" style="color: #2b2a2a;">{{ currentUser.email }}</p>
+              <div class="d-flex justify-content-start rounded-3 p-2 mb-2" style="background-color: #efefef;">
+                <div>
+                  <p class="small text-muted mb-1">Articles</p>
+                  <p class="mb-0">41</p>
+                </div>
+                <div class="px-3">
+                  <p class="small text-muted mb-1">Followers</p>
+                  <p class="mb-0">976</p>
+                </div>
+                <div>
+                  <p class="small text-muted mb-1">Rating</p>
+                  <p class="mb-0">8.5</p>
+                </div>
+              </div>
+              <div class="d-flex pt-1">
+                <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Chat</button>
+                <button type="button" class="btn btn-primary flex-grow-1">Follow</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <mat-card-content>
-        <p>Username: {{ currentUser.name }}</p>
-      </mat-card-content>
-    </mat-card>
-  </p>
-  <mat-card class="purchase-item-card">
-    <mat-card-header>
-      <mat-card-title>Purchase Items</mat-card-title>
-    </mat-card-header>
+    <div class="col">
+      <mat-card class="purchase-item-card">
+        <mat-card-header>
+          <mat-card-title>Purchase Items</mat-card-title>
+        </mat-card-header>
 
-    <mat-card-content>
+        <mat-card-content>
 
-      <!-- Purchase Items Table -->
-      <table mat-table [dataSource]="purchaseItems" class="">
+          <!-- Purchase Items Table -->
+          <table mat-table [dataSource]="purchaseItems" class="">
 
-        <!-- Column definitions using ng-container -->
-        <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Title</th>
-          <td mat-cell *matCellDef="let item">{{ item.title }}</td>
-        </ng-container>
+            <!-- Column definitions using ng-container -->
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Title</th>
+              <td mat-cell *matCellDef="let item">{{ item.title }}</td>
+            </ng-container>
 
-        <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef>Price</th>
-          <td mat-cell *matCellDef="let item">{{ item.price | currency:'USD' }}</td>
-        </ng-container>
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef>Price</th>
+              <td mat-cell *matCellDef="let item">{{ item.price | currency:'USD' }}</td>
+            </ng-container>
 
-        <ng-container matColumnDef="purchaseTime">
-          <th mat-header-cell *matHeaderCellDef>Purchase Time</th>
-          <td mat-cell *matCellDef="let item">{{ item.purchaseTime | date: 'medium' }}</td>
-        </ng-container>
+            <ng-container matColumnDef="purchaseTime">
+              <th mat-header-cell *matHeaderCellDef>Purchase Time</th>
+              <td mat-cell *matCellDef="let item">{{ item.purchaseTime | date: 'medium' }}</td>
+            </ng-container>
 
-        <!-- Set row header and keep placeholders for cells by adding *matRowDef and *matHeaderRowDef -->
-        <tr mat-header-row *matHeaderRowDef="['title', 'price', 'purchaseTime']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['title', 'price', 'purchaseTime']"></tr>
+            <!-- Set row header and keep placeholders for cells by adding *matRowDef and *matHeaderRowDef -->
+            <tr mat-header-row *matHeaderRowDef="['title', 'price', 'purchaseTime']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['title', 'price', 'purchaseTime']"></tr>
 
-        <!-- Display Total Price -->
+            <!-- Display Total Price -->
 
 
-      </table>
+          </table>
 
-    </mat-card-content>
+        </mat-card-content>
 
-    <mat-card-footer>
-      <mat-card-actions>
-        <p>
-          <td colspan="2" class="total-price">Total:</td>
-          <td class="total-price">{{ totalPrice | currency:'USD' }}</td>
-        </p>
-      </mat-card-actions>
-    </mat-card-footer>
-  </mat-card>
+        <mat-card-footer>
+          <mat-card-actions>
+            <p>
+              <td colspan="2" class="total-price">Total:</td>
+              <td class="total-price">{{ totalPrice | currency:'USD' }}</td>
+            </p>
+          </mat-card-actions>
+        </mat-card-footer>
+      </mat-card>
+    </div>
+  </div>
 </div>

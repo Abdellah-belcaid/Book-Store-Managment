@@ -25,6 +25,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Set<GrantedAuthority> authorities = Set.of(SecurityUtils.convertToAuthority(user.getRole().name()));
 
 		return UserPrincipal.builder().user(user).id(user.getId()).username(username).password(user.getPassword())
-				.authorities(authorities).build();
+				.email(user.getEmail()).Image_Path(user.getImage_Path()).authorities(authorities).build();
 	}
 }

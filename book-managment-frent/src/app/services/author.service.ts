@@ -18,7 +18,7 @@ export class AuthorService extends RequestBaseService {
   }
 
   public getAuthors(): Observable<Author[]> {
-    return this.http.get<Author[]>(API_URL,{ headers: this.getHeaders });
+    return this.http.get<Author[]>(API_URL);
   }
 
   public getAuthorById(id: number): Observable<Author> {

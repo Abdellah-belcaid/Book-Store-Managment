@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   public books: Book[];
   public errorMessage: string = "";
   public infoMessage: string = "";
+  isLiked = false;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -47,4 +48,6 @@ export class HomeComponent implements OnInit {
       });
   }
 
+
+  
 }

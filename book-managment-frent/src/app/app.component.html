@@ -1,9 +1,9 @@
 <mat-toolbar>
   <button mat-icon-button routerLink="/" routerLinkActive="active-link" class="example-icon"
     aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
   </button>
-  <span>Book Store</span>
+  <span>Book Store | </span>
 
   <button mat-button [matMenuTriggerFor]="menu" *ngIf="isAdmin()">Admin</button>
   <mat-menu #menu="matMenu">
@@ -15,23 +15,34 @@
   <span class="example-spacer"></span>
 
 
-  <button mat-button routerLink="/login" routerLinkActive="active-link" *ngIf="!currentUser?.id">Sign In</button>
-  <button mat-button routerLink="/register" routerLinkActive="active-link" *ngIf="!currentUser?.id">Sign Up</button>
+  <button mat-button routerLink="/login" routerLinkActive="active-link" *ngIf="!currentUser?.id">
+    <mat-icon aria-label="login icon" fontIcon="login"></mat-icon>
+    Sign In
+  </button>
+  <button mat-button routerLink="/register" routerLinkActive="active-link" *ngIf="!currentUser?.id">
+    <mat-icon>touch_app </mat-icon>
+    Sign Up
+  </button>
 
 
 
   <button mat-button routerLink="/profile" routerLinkActive="active-link" *ngIf="currentUser?.id">
-    <mat-icon>account_circle</mat-icon>{{currentUser.username}}
+    <mat-icon>account_circle</mat-icon>profile
   </button>
 
   <button mat-button (click)="logOut()" *ngIf="currentUser?.id">
+    <mat-icon aria-label="logout icon" fontIcon="logout" color="warn"></mat-icon>
     Sign Out
   </button>
+
+
 
 </mat-toolbar>
 <p>
   <router-outlet></router-outlet>
 </p>
+
+
 
 
 

@@ -1,1 +1,113 @@
-<p>admin works!</p>
+<div class="container-fluid mx-2 my-4">
+  <div class="row mt-4 mr-4">
+    <div class="col-md-3">
+      <mat-card class="example-card shadow">
+        <mat-card-content>
+          <mat-icon>dashboard</mat-icon>
+          <h2>Card 1</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-3">
+      <mat-card class="example-card shadow">
+        <mat-card-content>
+          <mat-icon>person</mat-icon>
+          <h2>Card 2</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-3">
+      <mat-card class="example-card shadow">
+        <mat-card-content>
+          <mat-icon>settings</mat-icon>
+          <h2>Card 3</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-3">
+      <mat-card class="example-card shadow bg-info">
+        <mat-card-content>
+          <mat-icon>receipt</mat-icon>
+          <h2>Card 4</h2>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mx-2 my-4">
+  <mat-card class="example-card shadow">
+    <mat-card-header>
+      <mat-card-subtitle>User List</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Angular Material table component-->
+      <mat-table [dataSource]="Users">
+
+        <!-- Define columns with column definitions using ng-container-->
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{ user.id }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{ user.name }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{ user.email }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="username">
+          <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{ user.username }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{ user.role }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="createTime">
+          <mat-header-cell *matHeaderCellDef> Create Time </mat-header-cell>
+          <mat-cell *matCellDef="let user"> {{ user.createTime | date:'mediumDate' }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="imageData">
+          <mat-header-cell *matHeaderCellDef> user image </mat-header-cell>
+          <mat-cell *matCellDef="let user"> <img src="data:image/png;base64,{{user.imageData}}" alt="User Image"
+            class="img-fluid rounded-circle my-1" style="width: 60px; height: 50px;">
+        </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            <button mat-icon-button color="primary" (click)="openEditModal(user)"> <mat-icon>edit</mat-icon> </button>
+            <button mat-icon-button color="warn" (click)="onDeleteUser(user.id)"> <mat-icon>delete</mat-icon> </button>
+          </mat-cell>
+        </ng-container>
+
+
+        <!-- Set row header and keep placeholders for cells by adding *matRowDef and *matHeaderRowDef-->
+        <mat-header-row
+          *matHeaderRowDef="['id', 'name', 'email', 'username', 'role', 'createTime','imageData', 'action']"></mat-header-row>
+        <mat-row
+          *matRowDef="let row; columns: ['id', 'name', 'email', 'username', 'role', 'createTime','imageData', 'action']"></mat-row>
+
+      </mat-table>
+    </mat-card-content>
+
+    <mat-card-footer>
+      <mat-card-actions>
+
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+</div>

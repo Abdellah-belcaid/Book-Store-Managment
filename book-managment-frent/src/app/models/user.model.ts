@@ -1,11 +1,15 @@
 import { Role } from "./role.enum";
 export class User {
-   id: number | undefined;
-   username: string = '';
-   password: string = '';
-   name: string = '';
-   token: string = '';
-   role:Role = Role.USER;
+  id: number | undefined;
+  name: string = '';
+  email: string = '';
+  Image_Path: string = '';
+  imageData: string = '';
+  username: string = '';
+  password: string = '';
+  token: string = '';
+  createTime :Date;
+  role: Role = Role.USER;
 }
 
 

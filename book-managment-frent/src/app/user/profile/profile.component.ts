@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
     private purchaseService: PurchaseService
   ) {
     this.currentUser = this.authenticationService.currentUserValue;
+    console.log(this.currentUser);
   }
 
   ngOnInit(): void {

@@ -6,13 +6,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditBookModalComponent } from './edit-book-modal/edit-book-modal.component';
 import { Book } from 'src/app/models/book.model';
 import { BookService } from 'src/app/services/book.service';
+import { AlertMessages } from 'src/app/shared/app.utils'
 
 
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.css']
-
 })
 export class BookComponent implements OnInit {
 
@@ -36,7 +36,7 @@ export class BookComponent implements OnInit {
         console.log(this.books);
       },
       (error: HttpErrorResponse) => {
-        this.AlertMassages(error.message);
+        AlertMessages(this.snackBar, error.message);
       }
     );
   }
@@ -48,10 +48,10 @@ export class BookComponent implements OnInit {
     this.bookServices.deleteBook(Book_id).subscribe(
       (response: void) => {
         this.onGetBooks();
-        this.AlertMassages('Book ' + response + ' deleted successfully !');
+        AlertMessages(this.snackBar, 'Book N° ' + Book_id + ' deleted successfully !');
       },
       (error: HttpErrorResponse) => {
-        this.AlertMassages(error.message);
+        AlertMessages(this.snackBar, error.message);
       }
     );
   }
@@ -60,7 +60,7 @@ export class BookComponent implements OnInit {
   public openAddModal(): void {
     const dialogRef = this.dialog.open(AddBookModalComponent);
     dialogRef.afterClosed().subscribe(result => {
-      this.AlertMassages('Book has been added successfully :) ');
+      AlertMessages(this.snackBar, 'Book has been added successfully :) ');
       this.onGetBooks();
     });
   }
@@ -70,18 +70,10 @@ export class BookComponent implements OnInit {
       data: book
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.AlertMassages('Book has been added successfully :) ');
+      AlertMessages(this.snackBar, 'Book has been added successfully :) ');
       this.onGetBooks();
     });
   }
-
-  private AlertMassages(message: any): void {
-    this.snackBar.open(message, 'Dismiss', {
-      duration: 10000,
-      verticalPosition: 'top'
-    });
-  }
-
 
 
 }

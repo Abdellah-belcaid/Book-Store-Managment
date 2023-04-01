@@ -12,6 +12,7 @@ export class RegisterComponent implements OnInit {
   user: User;
   errorMessage: string;
   hidePassword: boolean;
+  imageBase64: string;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -21,6 +22,7 @@ export class RegisterComponent implements OnInit {
     this.user = new User();
     this.errorMessage = '';
     this.hidePassword = true;
+    this.imageBase64 = '';
   }
   ngOnInit(): void {
     if (this.authenticationService.currentUserValue?.id) {
@@ -37,7 +39,7 @@ export class RegisterComponent implements OnInit {
       this.errorMessage = 'Please fill out all the fields.';
       return;
     }
-    this.authenticationService.register(this.user).subscribe(
+    this.authenticationService.register(this.user, this.imageBase64).subscribe(
       data => {
         this.zone.run(() => {
           this.router.navigate(['/login']); // Encapsulate navigation in zone.run()
@@ -52,5 +54,21 @@ export class RegisterComponent implements OnInit {
         }
       })
   }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        // Get the name of the file
+        const fileType = file.name.split('.').pop();
+        console.log(fileType);
+        // Convert the file data to Base64 and add the filename prefix
+        this.imageBase64 = `${fileType}::` + reader.result?.toString().split(',')[1];
+      };
+    }
+  }
+
 
 }

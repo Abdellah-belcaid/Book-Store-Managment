@@ -27,8 +27,7 @@ public class AuthorController {
 
 	@GetMapping
 	public ResponseEntity<List<Author>> getAllAuthors() {
-		List<Author> Authors = AuthorService.findallAuthors();
-		System.out.println(Authors);
+		List<Author> Authors = AuthorService.findallAuthors();		
 		return new ResponseEntity<>(Authors, HttpStatus.OK);
 	}
 

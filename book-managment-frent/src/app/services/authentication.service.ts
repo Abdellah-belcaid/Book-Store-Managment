@@ -11,9 +11,6 @@ const API_URL = `${environment.apiBaseUrl}/api/authentication/`
 })
 export class AuthenticationService {
 
-  //private apiServerUrl = (environment as any)!.apiBaseUrl;
-
-
   public currentUser: Observable<User>;
   private currentUserSubject: BehaviorSubject<User>;
 
@@ -34,21 +31,34 @@ export class AuthenticationService {
   }
 
   login(user: User): Observable<any> {
-
     return this.http.post<any>(API_URL + `sign-in`, user).pipe(
       map(response => {
         if (response) {
-          localStorage.setItem('currentUser', JSON.stringify(response));
+          const userData = response.user;
+          const imageData = response.imageData;
+
+          userData.imageData = imageData;
+          console.log(userData)
+          localStorage.setItem('currentUser', JSON.stringify(userData));
         }
         return response;
       })
     );
   }
 
-  register(user: User): Observable<any> {
+  register(user: User, imageBase64: string): Observable<any> {
     console.log(user);
-    return this.http.post(API_URL + `sign-up`, user);
+
+    const formData = new FormData();
+    formData.append('username', user.username);
+    formData.append('password', user.password);
+    formData.append('name', user.name);
+    formData.append('email', user.email);
+    formData.append('imageFile', imageBase64);
+
+    return this.http.post(API_URL + `sign-up`, formData);
   }
+
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(new User);

@@ -7,16 +7,17 @@
     <mat-grid-tile *ngFor="let book of books">
       <mat-card class="book-card">
         <mat-card-header>
-          <div mat-card-avatar><mat-icon>book</mat-icon></div>
+          <div mat-card-avatar><mat-icon>menu_book</mat-icon></div>
           <mat-card-title>{{ book.title }}</mat-card-title>
           <mat-card-subtitle>{{ book.author.firstName }} {{ book.author.lastName }}</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
-          <p>{{ book.price | currency:"USD"}}</p>
+          <h5>{{ book.price | currency:"USD"}}</h5>
+          <p>{{ book.publishDate }}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button (click)="purchase(book)">Buy Now</button>
+          <button mat-button color="warn" (click)="purchase(book)">Buy Now</button>
           <button mat-icon-button><mat-icon>favorite_border</mat-icon></button>
         </mat-card-actions>
       </mat-card>

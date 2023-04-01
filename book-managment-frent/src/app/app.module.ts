@@ -33,6 +33,8 @@ import { EditBookModalComponent } from './admin/book/edit-book-modal/edit-book-m
 
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +60,9 @@ import { EditBookModalComponent } from './admin/book/edit-book-modal/edit-book-m
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    
+
   ],
   providers: [BookService, AuthorService,AuthenticationService],
   bootstrap: [AppComponent]

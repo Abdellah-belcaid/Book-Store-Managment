@@ -13,9 +13,15 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Enter your email</mat-label>
+        <input matInput placeholder="email" [(ngModel)]="user.email" name="email" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Enter your username</mat-label>
         <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" required>
       </mat-form-field>
+
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Enter your password</mat-label>
@@ -26,6 +32,10 @@
           <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
+
+        <mat-label>Select an Image</mat-label>
+        <input type="file" (change)="onFileSelected($event)">
+      
 
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       <p>

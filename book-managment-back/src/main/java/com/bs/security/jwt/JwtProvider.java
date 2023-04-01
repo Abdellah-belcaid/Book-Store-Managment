@@ -1,11 +1,12 @@
 package com.bs.security.jwt;
 
+import java.security.Key;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,12 +21,14 @@ import com.bs.util.SecurityUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtProvider implements IJwtProvider {
 
 	@Value("${app.jwt.secret}")
-	private String JWT_SECRET;
+	private String JWT_SECRET_KEY;
 
 	@Value("${app.jwt.expiration-in-ms}")
 	private Long JWT_EXPIRATION_IN_MS;
@@ -38,8 +41,7 @@ public class JwtProvider implements IJwtProvider {
 
 		return Jwts.builder().setSubject(auth.getUsername()).claim("roles", authorities).claim("userId", auth.getId())
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_IN_MS))
-				.signWith(SignatureAlgorithm.HS512, JWT_SECRET).compact();
-
+				.signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
 	}
 
 	@Override
@@ -69,15 +71,8 @@ public class JwtProvider implements IJwtProvider {
 	public boolean validateToken(HttpServletRequest request) {
 
 		Claims claims = extractClaims(request);
-		if (claims == null) {
-			return false;
-		}
-		if (claims.getExpiration().before(new Date())) {
-			return false;
-		}
-		return true;
-		// return claims == null || claims.getExpiration().before(new Date()) ? false :
-		// true;
+
+		return claims == null || claims.getExpiration().before(new Date()) ? false : true;
 	}
 
 	public Claims extractClaims(HttpServletRequest request) {
@@ -85,8 +80,12 @@ public class JwtProvider implements IJwtProvider {
 		if (token == null) {
 			return null;
 		}
-
-		return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
+		return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
 	}
 
+	private Key getSignInKey() {
+		byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET_KEY);
+		return Keys.hmacShaKeyFor(keyBytes);
+
+	}
 }

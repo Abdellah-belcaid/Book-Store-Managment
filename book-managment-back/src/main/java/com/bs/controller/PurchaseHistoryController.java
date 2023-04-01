@@ -26,8 +26,7 @@ public class PurchaseHistoryController {
 
 	@GetMapping("{id}") // api/purchase-history
 	public ResponseEntity<?> getAllPurchasesOfUser(@PathVariable Long id) {
-		List<IPurchaseItem> purchaseHistories = purchaseHistoryService.findPurchasedItemsOfUser(id);
-		System.err.println(purchaseHistories);
+		List<IPurchaseItem> purchaseHistories = purchaseHistoryService.findPurchasedItemsOfUser(id);		
 		return ResponseEntity.ok(purchaseHistories);
 	}
 }
