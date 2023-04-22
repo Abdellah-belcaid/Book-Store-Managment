@@ -13,16 +13,16 @@
               <p class="mb-2 pb-1" style="color: #2b2a2a;">{{ currentUser.email }}</p>
               <div class="d-flex justify-content-start rounded-3 p-2 mb-2" style="background-color: #efefef;">
                 <div>
-                  <p class="small text-muted mb-1">Articles</p>
-                  <p class="mb-0">41</p>
+                  <p class="small text-muted mb-1">Id</p>
+                  <p class="mb-0">{{currentUser.id}}</p>
                 </div>
                 <div class="px-3">
-                  <p class="small text-muted mb-1">Followers</p>
-                  <p class="mb-0">976</p>
+                  <p class="small text-muted mb-1">Role</p>
+                  <p class="mb-0">{{currentUser.role}}</p>
                 </div>
                 <div>
-                  <p class="small text-muted mb-1">Rating</p>
-                  <p class="mb-0">8.5</p>
+                  <p class="small text-muted mb-1">Purchase</p>
+                  <p class="mb-0">{{purchaseItems.length}}</p>
                 </div>
               </div>
               <div class="d-flex pt-1">
@@ -67,7 +67,6 @@
             <tr mat-row *matRowDef="let row; columns: ['title', 'price', 'purchaseTime']"></tr>
 
             <!-- Display Total Price -->
-
 
           </table>
 

@@ -2,8 +2,8 @@ package com.bs.controller;
 
 import java.util.List;
 
-import com.bs.dao.IBookService;
 import com.bs.model.Book;
+import com.bs.service.IBookService;
 
 import lombok.AllArgsConstructor;
 

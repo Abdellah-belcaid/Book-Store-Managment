@@ -12,34 +12,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bs.dao.IAuthenticationService;
-import com.bs.dao.IUserService;
 import com.bs.model.User;
+import com.bs.service.IAuthenticationService;
+import com.bs.service.IUserService;
 import com.bs.util.Utils;
 
 import io.jsonwebtoken.io.IOException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/authentication") // pre-path
-@AllArgsConstructor
+@RequestMapping("/api/authentication") // pre-path
+@RequiredArgsConstructor
 public class AuthenticationController {
 
-	private IAuthenticationService authenticationService;
-	private IUserService userService;
+	private final IAuthenticationService authenticationService;
+	private final IUserService userService;
 
 	@PostMapping("/sign-up")
 	public ResponseEntity<?> signUp(@RequestParam("imageFile") String imageFile, @ModelAttribute User user) {
-	    if (userService.findByUsername(user.getUsername()).isPresent()) {
-	        return new ResponseEntity<>(HttpStatus.CONFLICT);
-	    }
-
-	    try {
-	        User savedUser = userService.saveUser(user, imageFile);
-	        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-	    } catch (IOException e) {
-	        return new ResponseEntity<>("Could not save user image", HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+		if (userService.findByUsername(user.getUsername()).isPresent()) {
+			return new ResponseEntity<>("User is already exist ! ",HttpStatus.CONFLICT);
+		}
+		try {
+			User savedUser = userService.saveUser(user, imageFile);
+			return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+		} catch (IOException e) {
+			return new ResponseEntity<>("Could not save user image", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("sign-in") // api/authentication/sign-in

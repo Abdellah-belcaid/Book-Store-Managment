@@ -13,11 +13,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.bs.util.SecurityUtils;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@AllArgsConstructor
+
 @Slf4j
+@RequiredArgsConstructor
 public class InternalApiAuthenticationFilter extends OncePerRequestFilter {
 
 	private final String accessKey;

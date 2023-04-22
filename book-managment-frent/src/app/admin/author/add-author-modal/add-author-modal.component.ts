@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Author } from 'src/app/models/author.model';
 import { AuthorService } from 'src/app/services/author.service';
+import { AlertMessages } from 'src/app/shared/app.utils';
 
 
 @Component({
@@ -19,15 +20,7 @@ export class AddAuthorModalComponent {
   ) { }
 
   // New author object
-  public newAuthor: Author =
-    {
-      id: null as any,
-      firstName: null as any,
-      lastName: null as any,
-      address: null as any,
-      birthDate: null as any,
-    };
-
+  public newAuthor: Author = new Author();
 
   public onAddAuthor(authorForm: any): void {
     console.log(authorForm.value);
@@ -38,18 +31,11 @@ export class AddAuthorModalComponent {
         this.dialogRef.close();
       },
       (error: HttpErrorResponse) => {
-        this.AlertMessage(error.message);
+        AlertMessages(this.snackBar, error.message);
         authorForm.reset();
       }
     );
   }
 
-
-  private AlertMessage(message: any): void {
-    this.snackBar.open(message, 'Dismiss', {
-      duration: 10000,
-      verticalPosition: 'top'
-    });
-  }
 
 }

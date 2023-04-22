@@ -1,9 +1,10 @@
 package com.bs.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,11 +27,21 @@ public class Author implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
+
+	@Column(name = "first_name", length = 100, nullable = false)
 	private String firstName;
+
+	@Column(name = "last_name", length = 100, nullable = false)
 	private String lastName;
-	private Date birthDate;
+
+	@Column(name = "birth_date", nullable = false)
+	private LocalDate birthDate;
+
+	@Column(name = "address", length = 100, nullable = false)
 	private String address;
+
 	@Transient
 	@OneToMany(mappedBy = "author")
 	private List<Book> books;

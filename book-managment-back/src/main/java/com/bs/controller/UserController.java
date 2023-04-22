@@ -3,20 +3,21 @@ package com.bs.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.bs.dao.IUserService;
 import com.bs.model.User;
+import com.bs.service.IUserService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
-	@Autowired
-	IUserService userService;
+	private final IUserService userService;
 
 	@GetMapping
 	public ResponseEntity<List<Map<String, Object>>> getAllUsers() {

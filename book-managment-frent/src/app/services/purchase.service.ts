@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Purchase } from '../models/purchase.model';
 import { AuthenticationService } from './authentication.service';
@@ -18,12 +18,18 @@ export class PurchaseService extends RequestBaseService {
   }
 
   public savePurchase(purchase: Purchase): Observable<any> {
+    if (this.currentUser.role === "ADMIN") {
+      return throwError("Unauthorized access");
+    }
     return this.http.post(API_URL, purchase, { headers: this.getHeaders });
   }
 
-  public getAllPurchaseItems(): Observable<any> {
+  public getAllPurchaseItemsOfUser(): Observable<any> {
     return this.http.get(API_URL + `/${this.authenticationService.currentUserValue.id}`, { headers: this.getHeaders });
   }
 
+  public getAllPurchaseItems(): Observable<any> {
+    return this.http.get(API_URL, { headers: this.getHeaders });
+  }
 
 }

@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Author } from 'src/app/models/author.model';
 import { Book } from 'src/app/models/book.model';
 import { BookService } from 'src/app/services/book.service';
+import { AlertMessages } from 'src/app/shared/app.utils';
 import { AuthorComponent } from '../../author/author.component';
 
 
@@ -36,7 +37,7 @@ export class EditBookModalComponent {
       this.Authors = authors;
       console.log(this.Authors);
     }).catch(error => {
-      this.AlertMassages(error);
+      AlertMessages(this.snackBar,error);
     });
   }
 
@@ -46,24 +47,15 @@ export class EditBookModalComponent {
     this.bookService.updateBook(editForm.value).subscribe(
       (response: Book) => {
         console.log(response);
-        this.AlertMassages('Book ' + response.title + ' has been edited successfully');
+        AlertMessages(this.snackBar,'Book ' + response.title + ' has been edited successfully');
         editForm.reset();
         this.dialogRef.close();
       },
       (error: HttpErrorResponse) => {
-        this.AlertMassages(error.message);
+        AlertMessages(this.snackBar,error.message);
         editForm.reset();
       }
     );
   }
-
-  private AlertMassages(message: any): void {
-    this.snackBar.open(message, 'Dismiss', {
-      duration: 10000,
-      verticalPosition: 'top'
-    });
-  }
-
-
 
 }

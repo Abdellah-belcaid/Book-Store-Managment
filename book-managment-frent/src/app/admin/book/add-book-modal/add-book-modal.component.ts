@@ -7,6 +7,7 @@ import { Book } from 'src/app/models/book.model';
 import { Author } from 'src/app/models/author.model';
 import { AddAuthorModalComponent } from '../../author/add-author-modal/add-author-modal.component';
 import { AuthorComponent } from '../../author/author.component';
+import { AlertMessages } from 'src/app/shared/app.utils';
 
 
 @Component({
@@ -17,15 +18,7 @@ import { AuthorComponent } from '../../author/author.component';
 })
 export class AddBookModalComponent implements OnInit {
   public Authors!: Author[];
-  public newBook: Book = {
-    id: null as any,
-    title: null as any,
-    price: null as any,
-    publishDate: null as any,
-    amount: null as any,
-    author: null as any
-  };
-
+  public newBook: Book = new Book();
 
   constructor(
     private authorComp: AuthorComponent,
@@ -40,12 +33,9 @@ export class AddBookModalComponent implements OnInit {
       this.Authors = authors;
       console.log(this.Authors);
     }).catch(error => {
-      this.handleErrors(error);
+      AlertMessages(this.snackBar, error.message);
     });
   }
-
-
-
 
 
   public onAddBook(bookForm: any): void {
@@ -57,17 +47,10 @@ export class AddBookModalComponent implements OnInit {
         this.dialogRef.close();
       },
       (error: HttpErrorResponse) => {
-        this.handleErrors(error);
-        bookForm.reset();
+        AlertMessages(this.snackBar, error.message);
+        //bookForm.reset();
       }
     );
-  }
-
-  private handleErrors(error: HttpErrorResponse): void {
-    this.snackBar.open(error.message, 'Dismiss', {
-      duration: 10000,
-      verticalPosition: 'top'
-    });
   }
 
 }

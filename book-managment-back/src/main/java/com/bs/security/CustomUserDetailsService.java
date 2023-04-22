@@ -2,21 +2,23 @@ package com.bs.security;
 
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.bs.dao.IUserService;
 import com.bs.model.User;
+import com.bs.service.IUserService;
 import com.bs.util.SecurityUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-	@Autowired
-	private IUserService userService;
+
+	private final IUserService userService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

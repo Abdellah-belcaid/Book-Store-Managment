@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Author } from 'src/app/models/author.model';
 import { AuthorService } from 'src/app/services/author.service';
+import { AlertMessages } from 'src/app/shared/app.utils';
 
 
 @Component({
@@ -22,7 +23,6 @@ export class EditAuthorModalComponent {
     private snackBar: MatSnackBar
   ) {
     console.log(data); // Log the passed data
-    console.log(data.id);
     this.EditedAuthor = data;
   }
 
@@ -31,22 +31,15 @@ export class EditAuthorModalComponent {
     this.authorService.updateAuthor(editForm.value).subscribe(
       (response: Author) => {
         console.log(response);
-        this.AlertMassages('author ' + response.firstName + ' has been edited successfully');
+        AlertMessages(this.snackBar, 'author ' + response.firstName + ' has been edited successfully');
         editForm.reset();
         this.dialogRef.close();
       },
       (error: HttpErrorResponse) => {
-        this.AlertMassages(error.message);
+        AlertMessages(this.snackBar, error.message);
         editForm.reset();
       }
     );
-  }
-
-  private AlertMassages(message: any): void {
-    this.snackBar.open(message, 'Dismiss', {
-      duration: 10000,
-      verticalPosition: 'top'
-    });
   }
 
 }

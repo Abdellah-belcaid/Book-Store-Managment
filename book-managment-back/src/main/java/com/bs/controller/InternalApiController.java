@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bs.dao.IUserService;
+import com.bs.service.IUserService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/internal")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class InternalApiController {
 
-	private IUserService userService;
+	private final IUserService userService;
 
 	@PutMapping("make-admin/{username}")
 	public ResponseEntity<?> makeAdmibn(@PathVariable String username) {

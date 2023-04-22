@@ -26,7 +26,7 @@ public class UserPrincipal implements UserDetails {
 	private String username;
 	private String email;
 	private String Image_Path;
-	transient private String password; // don't show up on an searialized places
+	transient private String password; // don't show up on an serialized places
 	transient private User user; // user for only login operation, don't use in JWT.
 	private Set<GrantedAuthority> authorities;
 

@@ -6,6 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditAuthorModalComponent } from './edit-author-modal/edit-author-modal.component';
 import { Author } from 'src/app/models/author.model';
 import { AuthorService } from 'src/app/services/author.service';
+import { AlertMessages } from 'src/app/shared/app.utils'
+
 
 @Component({
   selector: 'app-author',
@@ -27,7 +29,7 @@ export class AuthorComponent implements OnInit {
       this.Authors = authors;
       console.log(this.Authors);
     }).catch(error => {
-      alert(error);
+      AlertMessages(this.snackBar, error.message);
     });
   }
 
@@ -39,7 +41,7 @@ export class AuthorComponent implements OnInit {
           resolve(response);
         },
         (error: HttpErrorResponse) => {
-          this.AlertMassages(error.message);
+          AlertMessages(this.snackBar,error.message);
         }
       );
     });
@@ -49,10 +51,10 @@ export class AuthorComponent implements OnInit {
     this.authorServices.deleteAuthor(author_id).subscribe(
       (response: void) => {
         this.onGetAuthors();
-        this.AlertMassages('Author N° ' + author_id + 'has been deleted successfully !');
+        AlertMessages(this.snackBar,'Author N° ' + author_id + 'has been deleted successfully !');
       },
       (error: HttpErrorResponse) => {
-        this.AlertMassages(error.message);
+        AlertMessages(this.snackBar,error.message);
       }
     );
   }
@@ -70,15 +72,6 @@ export class AuthorComponent implements OnInit {
     }
     dialogRef.afterClosed().subscribe(() => {
       this.onGetAuthors();
-    });
-  }
-
-
-
-  private AlertMassages(message: any): void {
-    this.snackBar.open(message, 'Dismiss', {
-      duration: 10000,
-      verticalPosition: 'top'
     });
   }
 

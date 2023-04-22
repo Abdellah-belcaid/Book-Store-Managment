@@ -43,7 +43,7 @@ public class User implements Serializable {
 	@Column(name = "create_time", nullable = false)
 	private LocalDateTime createTime;
 //
-	@Column(name = "Image_Path" )
+	@Column(name = "Image_Path")
 	private String Image_Path;
 
 	@Enumerated(EnumType.STRING)

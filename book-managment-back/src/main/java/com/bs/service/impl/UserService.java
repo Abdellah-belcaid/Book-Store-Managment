@@ -1,46 +1,39 @@
-package com.bs.service;
+package com.bs.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import com.bs.model.Role;
+import com.bs.model.User;
+import com.bs.repository.IUserRepository;
+import com.bs.service.IUserService;
+import com.bs.util.Utils;
+import io.jsonwebtoken.io.IOException;
 import jakarta.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bs.dao.IUserService;
-import com.bs.model.Role;
-import com.bs.model.User;
-import com.bs.repository.IUserRepository;
-import com.bs.util.Utils;
-
-import io.jsonwebtoken.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements IUserService {
-	@Autowired
-	private IUserRepository userRepository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final IUserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public User saveUser(User user, String imageFile) throws IOException {
-		if (user == null) {
-			throw new IllegalArgumentException("User cannot be null");
-		}
+		Optional.ofNullable(user).orElseThrow(() -> new IllegalArgumentException("User cannot be null"));
 
-		if (findByUsername(user.getUsername()).isPresent()) {
+		findByUsername(user.getUsername()).ifPresent(u -> {
 			throw new IllegalArgumentException("Username already exists");
-		}
+		});
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setRole(Role.USER);
@@ -63,20 +56,17 @@ public class UserService implements IUserService {
 	public List<Map<String, Object>> getAllUsers() {
 		List<User> userList = userRepository.findAll();
 
-		List<Map<String, Object>> users = new ArrayList<>();
-		for (User user : userList) {
+		return userList.stream().map(user -> {
+			Map<String, Object> response = new java.util.HashMap<>();
 			try {
-				Map<String, Object> response = new HashMap<>();
 				String base64Image = Utils.loadImageAsBase64(user.getImage_Path());
 				response.put("user", user);
 				response.put("imageData", base64Image);
-
-				users.add(response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		return users;
+			return response;
+		}).collect(Collectors.toList());
 	}
 
 	@Override
@@ -84,8 +74,8 @@ public class UserService implements IUserService {
 		return userRepository.findById(id).orElse(null);
 	}
 
+	@Transactional
 	@Override
-	@Transactional // TransactionalRequired when executing an update/delete query.
 	public void makeAdmin(String username) {
 		userRepository.updateUserRole(username, Role.ADMIN);
 	}
@@ -111,21 +101,18 @@ public class UserService implements IUserService {
 	@Override
 	public HttpStatus deleteUser(Long id) {
 		try {
-			User user = userRepository.findById(id).orElse(null);
-			if (user == null) {
+			Optional<User> optionalUser = userRepository.findById(id);
+			if (optionalUser.isEmpty()) {
 				return HttpStatus.NOT_FOUND;
 			}
-
+			User user = optionalUser.get();
 			String imagePath = user.getImage_Path();
-
 			if (imagePath != null) {
 				// Delete user image file
 				Utils.deleteImage(imagePath);
 			}
-
 			userRepository.delete(user);
 			return HttpStatus.NO_CONTENT;
-
 		} catch (EmptyResultDataAccessException e) {
 			return HttpStatus.NOT_FOUND;
 		} catch (DataIntegrityViolationException e) {

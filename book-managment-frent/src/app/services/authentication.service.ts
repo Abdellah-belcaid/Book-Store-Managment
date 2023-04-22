@@ -25,7 +25,6 @@ export class AuthenticationService {
   }
 
 
-
   public get currentUserValue(): User {
     return this.currentUserSubject.value;
   }
@@ -35,9 +34,7 @@ export class AuthenticationService {
       map(response => {
         if (response) {
           const userData = response.user;
-          const imageData = response.imageData;
-
-          userData.imageData = imageData;
+          userData.imageData = response.imageData;
           console.log(userData)
           localStorage.setItem('currentUser', JSON.stringify(userData));
         }

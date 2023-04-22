@@ -1,8 +1,9 @@
 package com.bs.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,13 +26,24 @@ import lombok.NoArgsConstructor;
 @Table(name = "Books")
 public class Book implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
+
+	@Column(name = "title", length = 100, nullable = false)
 	private String title;
+
+	@Column(name = "price", length = 100, nullable = false)
 	private float price;
-	private Date publishDate;
+
+	@Column(name = "publish_date", nullable = false)
+	private LocalDate publishDate;
+
+	@Column(name = "amount", length = 100, nullable = false)
 	private int amount;
+
 	@ManyToOne
 	@JoinColumn(name = "author_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)

@@ -25,17 +25,21 @@
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Enter your password</mat-label>
-        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="password" [(ngModel)]="user.password" name="password"
-          required>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="password" [(ngModel)]="user.password"
+          name="password" required>
         <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hidePassword">
           <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
 
-        <mat-label>Select an Image</mat-label>
-        <input type="file" (change)="onFileSelected($event)">
-      
+
+
+        <mat-label>Choose an Image</mat-label>
+        <button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
+        <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
+        <!--<input matInput type="file" (change)="onFileSelected($event)">-->
+
 
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       <p>

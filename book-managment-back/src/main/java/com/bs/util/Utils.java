@@ -28,7 +28,7 @@ public class Utils {
 				Files.createDirectories(fileSaveDir);
 			}
 			// Get file path of saved image file
-			imagePath = fileSaveDir.resolve(ImageName +"."+ fileType);
+			imagePath = fileSaveDir.resolve(ImageName + "." + fileType);
 
 			Files.write(imagePath, imageBytes);
 

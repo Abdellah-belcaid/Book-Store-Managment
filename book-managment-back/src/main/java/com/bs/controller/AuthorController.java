@@ -2,8 +2,8 @@ package com.bs.controller;
 
 import java.util.List;
 
-import com.bs.dao.IAuthorService;
 import com.bs.model.Author;
+import com.bs.service.IAuthorService;
 
 import lombok.AllArgsConstructor;
 
