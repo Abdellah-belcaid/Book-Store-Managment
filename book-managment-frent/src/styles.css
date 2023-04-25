@@ -9,8 +9,6 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.3.1/css/all.min.css');
 
 
-
-
 .card {
   margin: auto;
 }
@@ -188,8 +186,7 @@ input[type='checkbox'] {
 input[type='date'],
 input[type='time'],
 input[type='datetime-local'],
-input[type='month'] {
-  -webkit-appearance: listbox;
+input[type='month'] { -webkit-appearance: listbox;
 }
 
 legend {
@@ -711,5 +708,7 @@ p {
   font-weight: 300;
   line-height: 1.7;
 }
+
+
 
 

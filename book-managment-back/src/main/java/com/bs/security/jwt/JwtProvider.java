@@ -35,7 +35,6 @@ public class JwtProvider implements IJwtProvider {
 
 	@Override
 	public String generateToken(UserPrincipal auth) {
-
 		String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
 
@@ -71,7 +70,6 @@ public class JwtProvider implements IJwtProvider {
 	public boolean validateToken(HttpServletRequest request) {
 
 		Claims claims = extractClaims(request);
-
 		return claims == null || claims.getExpiration().before(new Date()) ? false : true;
 	}
 

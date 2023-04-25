@@ -1,3 +1,116 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+.centered-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+
+}
+
+body * {
+  border-radius: 50%;
+}
+
+.red-shadow {
+  box-shadow: 0px 0px 40px #e85253;
+  animation: spin 2s linear infinite;
+}
+
+#sharingan {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  background-color: #e85253;
+  box-shadow: inset 0px 0px 20px;
+}
+
+#inner-circle {
+  position: relative;
+  width: 65%;
+  height: 65%;
+  border: 1.5px dotted black;
+
+}
+
+#inner-circle::before {
+  content: '';
+  display: inline-block;
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+  background-color: black;
+  box-shadow: 0px 0px 30px black;
+}
+
+.tomoe {
+  position: absolute;
+  display: inline-block;
+  width: 15%;
+  height: 15%;
+  background-color: black;
+}
+
+.tomoe::after {
+  position: absolute;
+  content: '';
+  display: inline-block;
+  width: 50%;
+  height: 50%;
+  background-color: black;
+}
+
+.tomoe:first-child {
+  top: 12.5%;
+  right: 12.5%;
+  transform: translate(50%, -25%);
+}
+
+.tomoe:first-child:after {
+  top: 2%;
+  left: 70%;
+  border-radius: 0 100% 0 100%;
+  transform: skew(15deg, 15deg) rotate(-15deg);
+}
+
+.tomoe:nth-child(2) {
+  top: 25%;
+  left: 0;
+  transform: translate(-45%, 15%);
+}
+
+.tomoe:nth-child(2):after {
+  bottom: 60%;
+  border-radius: 100% 0;
+  transform: rotate(-25deg) skew(-25deg);
+}
+
+.tomoe:last-child {
+  bottom: 0;
+  right: 37.5%;
+  transform: translate(50%, 30%);
+}
+
+.tomoe:last-child:after {
+  top: 70%;
+  right: 15%;
+  border-radius: 100% 0;
+  transform: skew(-15deg);
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(-360deg);
+  }
+}

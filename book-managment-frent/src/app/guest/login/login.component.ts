@@ -32,31 +32,29 @@ export class LoginComponent implements OnInit {
       return;
     }
   }
-
   login(event: Event) {
-    event.preventDefault(); // Prevent form submission if fields are empty
+    event.preventDefault();
 
     if (!this.user.username || !this.user.password) {
       this.errorMessage = 'Please fill out both username and password fields.';
       return;
     }
 
-    this.authenticationService.login(this.user).subscribe(
-      data => {
-        this.zone.run(() => {
-          this.router.navigate(['/profile']); // Encapsulate navigation in zone.run()
-        });
-        console.log(data);
-      },
-      err => {
-        if (err.status === 401) {
-          this.errorMessage = 'Invalid username or password!';
-        } else {
-          this.errorMessage = 'An unexpected error occurred. Please try again later.';
+    this.zone.run(() => {
+      this.authenticationService.login(this.user).subscribe(
+        data => {
+          this.router.navigate(['/profile']);
+          console.log(data);
+        },
+        err => {
+          if (err.status === 401) {
+            this.errorMessage = 'Invalid username or password!';
+          } else {
+            this.errorMessage = 'An unexpected error occurred. Please try again later.';
+          }
+          console.log(err);
         }
-        console.log(err);
-      }
-    );
+      );
+    });
   }
-
-}
+  }

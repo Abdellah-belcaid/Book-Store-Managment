@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddBookModalComponent } from './add-book-modal/add-book-modal.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EditBookModalComponent } from './edit-book-modal/edit-book-modal.component';
 import { Book } from 'src/app/models/book.model';
 import { BookService } from 'src/app/services/book.service';
-import { AlertMessages } from 'src/app/shared/app.utils'
+import { AlertMessages } from 'src/app/shared/app.utils';
+import { AddBookModalComponent } from './add-book-modal/add-book-modal.component';
+import { EditBookModalComponent } from './edit-book-modal/edit-book-modal.component';
 
 
 @Component({
@@ -16,7 +16,7 @@ import { AlertMessages } from 'src/app/shared/app.utils'
 })
 export class BookComponent implements OnInit {
 
-  public books!: Book[];
+  public Books!: Book[];
 
   constructor(
     private bookServices: BookService,
@@ -25,29 +25,25 @@ export class BookComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.onGetBooks();
+    this.getBooks();
   }
 
-
-  public onGetBooks(): void {
+  private getBooks(): void {
     this.bookServices.getBooks().subscribe(
-      (response: Book[]) => {
-        this.books = response;
-        console.log(this.books);
+      (books: Book[]) => {
+        this.Books = books;
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
+        AlertMessages(this.snackBar,error.message);
       }
     );
   }
 
-
-
   public onDeleteBook(Book_id: number): void {
     console.log(Book_id);
     this.bookServices.deleteBook(Book_id).subscribe(
-      (response: void) => {
-        this.onGetBooks();
+      () => {
+        this.getBooks();
         AlertMessages(this.snackBar, 'Book N° ' + Book_id + ' deleted successfully !');
       },
       (error: HttpErrorResponse) => {
@@ -56,12 +52,11 @@ export class BookComponent implements OnInit {
     );
   }
 
-
   public openAddModal(): void {
     const dialogRef = this.dialog.open(AddBookModalComponent);
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       AlertMessages(this.snackBar, 'Book has been added successfully :) ');
-      this.onGetBooks();
+      this.getBooks();
     });
   }
 
@@ -69,11 +64,10 @@ export class BookComponent implements OnInit {
     const dialogRef = this.dialog.open(EditBookModalComponent, {
       data: book
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       AlertMessages(this.snackBar, 'Book has been added successfully :) ');
-      this.onGetBooks();
+      this.getBooks();
     });
   }
-
 
 }

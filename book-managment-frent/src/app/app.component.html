@@ -14,7 +14,6 @@
   </mat-menu>
   <span class="example-spacer"></span>
 
-
   <button mat-button routerLink="/login" routerLinkActive="active-link" *ngIf="!currentUser?.id">
     <mat-icon aria-label="login icon" fontIcon="login"></mat-icon>
     Sign In
@@ -23,8 +22,6 @@
     <mat-icon>touch_app </mat-icon>
     Sign Up
   </button>
-
-
 
   <button mat-button routerLink="/profile" routerLinkActive="active-link" *ngIf="currentUser?.id">
     <mat-icon>account_circle</mat-icon>profile
@@ -35,14 +32,30 @@
     Sign Out
   </button>
 
-
-
 </mat-toolbar>
+
+
+
+<!-- code for spinner credit : https://codepen.io/JosueMagnus12 -->
+<div *ngIf="isLoading">
+
+  <body class="centered-flex ">
+    <div class="red-shadow">
+      <div id="sharingan" class="centered-flex">
+        <div id="inner-circle" class="centered-flex">
+          <span class="tomoe"></span>
+          <span class="tomoe"></span>
+          <span class="tomoe"></span>
+        </div>
+      </div>
+    </div>
+  </body>
+</div>
+
+
 <p>
   <router-outlet></router-outlet>
 </p>
-
-
 
 
 

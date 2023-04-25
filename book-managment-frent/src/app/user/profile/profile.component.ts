@@ -10,7 +10,7 @@ import { PurchaseService } from 'src/app/services/purchase.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  purchaseItems: purchaseItem[];
+  purchaseItems: purchaseItem[] = [];
   currentUser: User = new User();
   totalPrice: number = 0;
 

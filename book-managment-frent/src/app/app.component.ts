@@ -10,9 +10,9 @@ import { AuthenticationService } from './services/authentication.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title: "book store ";
+export class AppComponent implements OnInit{
   currentUser: User = new User();
+  isLoading = false;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -23,13 +23,26 @@ export class AppComponent {
     });
   }
 
-  isAdmin() {
+  ngOnInit() {
+    this.setLoading(true);
+    window.onload = () => {
+      this.isLoading = false;
+    };
+  }
 
+
+  isAdmin() {
     return this.currentUser?.role === Role.ADMIN;
   }
+
   logOut() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+  }
+
+
+  setLoading(value: boolean): void {
+    this.isLoading = value;
   }
 
 }

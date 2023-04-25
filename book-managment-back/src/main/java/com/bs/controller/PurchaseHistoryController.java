@@ -32,7 +32,7 @@ public class PurchaseHistoryController {
 
 	@GetMapping // api/purchase-history
 	public ResponseEntity<?> getAllPurchases() {
-		List<IPurchaseItem> purchaseHistories = purchaseHistoryService.findAllPurchaseItems();
+		List<IPurchaseItem> purchaseHistories = purchaseHistoryService.findAllPurchaseItems();		
 		return ResponseEntity.ok(purchaseHistories);
 	}
 

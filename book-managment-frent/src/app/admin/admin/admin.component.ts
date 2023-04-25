@@ -3,41 +3,90 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Author } from 'src/app/models/author.model';
 import { Book } from 'src/app/models/book.model';
+import { Purchase } from 'src/app/models/purchase.model';
 import { User } from 'src/app/models/user.model';
 import { AuthorService } from 'src/app/services/author.service';
 import { BookService } from 'src/app/services/book.service';
 import { PurchaseService } from 'src/app/services/purchase.service';
 import { UserService } from 'src/app/services/user.service';
-import { AlertMessages } from 'src/app/shared/app.utils'
+import { AlertMessages } from 'src/app/shared/app.utils';
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent {
-  public Users!: User[];
-  public Books!: Book[];
-  public Authors!: Author[];
+  public Users: User[] = [];
+  public Books: Book[] = [];
+  public Authors: Author[] = [];
+  public Purchases: Purchase[] = [];
 
+  purchaseChange: number = 0;
+  userChange: number = 0;
+  BookChange: number = 0;
+  AuthorChange: number = 0;
 
   constructor(
     private UserServices: UserService,
     private snackBar: MatSnackBar,
-    private bookService: BookService,
-    private authorService: AuthorService,
     private purchaseService: PurchaseService,
+    private authorService: AuthorService,
+    private bookService: BookService
   ) { }
 
   ngOnInit(): void {
     this.onGetUsers();
-
+    this.getPurchases();
+    this.getAuthors();
+    this.getBooks();
   }
 
-  public onGetUsers(): void {
+
+  private getAuthors(): void {
+    this.authorService.getAuthors().subscribe(
+      (authors: Author[]) => {
+        this.Authors = authors;
+      },
+      (error: HttpErrorResponse) => {
+        AlertMessages(this.snackBar, error.message);
+      }
+    );
+  }
+
+  private getBooks(): void {
+    this.bookService.getBooks().subscribe(
+      (books: Book[]) => {
+        this.Books = books;
+        this.BookChange = Book.calculateBookChange(books);
+      },
+      (error: HttpErrorResponse) => {
+        AlertMessages(this.snackBar, error.message);
+      }
+    );
+  }
+
+
+  private getPurchases(): void {
+    this.purchaseService.getAllPurchaseItems().subscribe(
+      (purchases: Purchase[]) => {
+        this.Purchases = purchases;
+        this.purchaseChange = Purchase.calculatePurchaseChange(purchases);
+      },
+      (error: HttpErrorResponse) => {
+        AlertMessages(this.snackBar, error.message);
+        console.log(error);
+      }
+    );
+  }
+
+
+  private onGetUsers(): void {
     this.UserServices.getUsers().subscribe(
-      (response: User[]) => {
-        this.Users = response;
-        console.log(this.Users);
+      (users: User[]) => {
+        this.Users = users;
+        console.log(users);
+        this.userChange = User.calculateUserChange(users);
       },
       (error: HttpErrorResponse) => {
         AlertMessages(this.snackBar, error.message);
@@ -48,7 +97,7 @@ export class AdminComponent {
 
 
   openEditModal(user: User) {
-console.log(user);
+    console.log(user);
   }
 
   onDeleteUser(userId: number) {
@@ -63,6 +112,5 @@ console.log(user);
       }
     );
   }
-
 
 }

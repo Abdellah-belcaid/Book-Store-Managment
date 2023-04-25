@@ -7,13 +7,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-public class JwtAuthorizationFilter extends OncePerRequestFilter {
+import io.jsonwebtoken.JwtException;
 
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	@Autowired
 	private IJwtProvider jwtProvider;
 
@@ -25,11 +27,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		Authentication authentication = jwtProvider.getAuthentication(request);
-
-		if (authentication != null && jwtProvider.validateToken(request)) {
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+		try {
+			Authentication authentication = jwtProvider.getAuthentication(request);
+			if (authentication != null && jwtProvider.validateToken(request)) {
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+			filterChain.doFilter(request, response);
+		} catch (JwtException e) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().write("jwt expired");			
+			response.getWriter().flush();
+			response.getWriter().close();
 		}
-		filterChain.doFilter(request, response);
 	}
 }

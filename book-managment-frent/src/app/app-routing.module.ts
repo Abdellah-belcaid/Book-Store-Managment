@@ -9,16 +9,14 @@ import { LoginComponent } from './guest/login/login.component';
 import { RegisterComponent } from './guest/register/register.component';
 import { Role } from './models/role.enum';
 import { ProfileComponent } from './user/profile/profile.component';
-
 import { RouterTestingModule } from "@angular/router/testing";
-import { BookComponent } from './admin/book/book.component';
 import { AuthorComponent } from './admin/author/author.component';
+import { BookComponent } from './admin/book/book.component';
 
 const routes: Routes = [
 
-  { path: '', redirectTo: "home" , pathMatch: "prefix"},
+  { path: '', redirectTo: "home", pathMatch: "prefix" },
   { path: 'home', component: HomeComponent },
-
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
@@ -37,7 +35,6 @@ const routes: Routes = [
   },
   { path: 'admin/books', component: BookComponent },
   { path: 'admin/authors', component: AuthorComponent },
-
 
   { path: '401', component: UnauthorizedComponent },
   { path: '**', redirectTo: '404', pathMatch: "full" },

@@ -65,9 +65,7 @@
             <!-- Set row header and keep placeholders for cells by adding *matRowDef and *matHeaderRowDef -->
             <tr mat-header-row *matHeaderRowDef="['title', 'price', 'purchaseTime']"></tr>
             <tr mat-row *matRowDef="let row; columns: ['title', 'price', 'purchaseTime']"></tr>
-
             <!-- Display Total Price -->
-
           </table>
 
         </mat-card-content>
