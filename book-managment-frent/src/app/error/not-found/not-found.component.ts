@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./not-found.component.css']
 })
 export class NotFoundComponent {
-
+  title: String = "Not Found";
 }

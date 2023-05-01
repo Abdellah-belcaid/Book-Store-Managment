@@ -29,7 +29,7 @@ export class AuthorComponent implements OnInit {
       this.Authors = authors;
       console.log(this.Authors);
     }).catch(error => {
-      AlertMessages(this.snackBar, error.message);
+      AlertMessages(this.snackBar, error);
     });
   }
 
@@ -41,7 +41,7 @@ export class AuthorComponent implements OnInit {
           resolve(response);
         },
         (error: HttpErrorResponse) => {
-          AlertMessages(this.snackBar,error.message);
+          AlertMessages(this.snackBar,error);
         }
       );
     });
@@ -54,7 +54,7 @@ export class AuthorComponent implements OnInit {
         AlertMessages(this.snackBar,'Author N° ' + author_id + 'has been deleted successfully !');
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar,error.message);
+        AlertMessages(this.snackBar,error);
       }
     );
   }

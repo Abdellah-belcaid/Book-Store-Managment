@@ -30,6 +30,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { AuthorService } from './services/author.service';
 import { BookService } from './services/book.service';
 import { JwtInterceptor } from './guards/jwt.interceptor';
+import { EditUserComponent } from './user/profile/edit-user/edit-user.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { JwtInterceptor } from './guards/jwt.interceptor';
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    AdminComponent
+    AdminComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,

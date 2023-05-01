@@ -5,7 +5,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import com.bs.exception.UserNotFoundException;
+import com.bs.model.Role;
 import com.bs.model.User;
 
 import io.jsonwebtoken.io.IOException;
@@ -16,14 +19,15 @@ public interface IUserService {
 
 	Optional<User> findByUsername(String username);
 
-	void makeAdmin(String username);
+	Role makeAdmin(String username) throws UserNotFoundException;
 
 	HttpStatus deleteUser(Long id);
-
-	User updateUser(Long id, User user);
+	
 
 	List<Map<String, Object>> getAllUsers();
 
-	User getUserById(Long id);
+	Optional<User> getUserById(Long id);
+
+	ResponseEntity<?> updateUser(User oldUser, User newUser, String oldpassword, String imageFile);
 
 }

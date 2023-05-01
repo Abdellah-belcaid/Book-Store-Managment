@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,7 +17,6 @@ import com.bs.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
 @RequiredArgsConstructor
 public class InternalApiAuthenticationFilter extends OncePerRequestFilter {
@@ -25,7 +25,7 @@ public class InternalApiAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-
+		// Only filter requests to internal API endpoints
 		return !request.getRequestURI().startsWith("/api/internal");
 	}
 
@@ -34,20 +34,42 @@ public class InternalApiAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		try {
-			String requestKey = SecurityUtils.extractAuthTokenFromRequest(request);
+			String authToken = SecurityUtils.extractAuthTokenFromRequest(request);
 
-			if (requestKey == null || !requestKey.equals(accessKey)) {
-				log.warn("Internal key endpoint requested without/wrong key uri: {}", request.getRequestURI());
-				throw new RuntimeException("UNAUTHORIZED");
+			if (authToken == null || !authToken.equals(accessKey)) {
+				/*
+				 * If the request auth token is null or doesn't match the expected access key,
+				 * return an unauthorized response
+				 */
+				String errorMessage = "Request to internal API endpoint was made without a valid access key. Received key: "
+						+ authToken;
+				log.warn(errorMessage);
+				response.setStatus(HttpStatus.UNAUTHORIZED.value());
+				response.getWriter().write(errorMessage);
+				return;
 			}
 
+			/*
+			 * If the request auth token is valid, set the user principal to a super user
+			 * and set it in the security context
+			 */
 			UserPrincipal user = UserPrincipal.createSuperUser();
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null,
 					user.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		} catch (Exception e) {
-			log.error("Couldn't set user authentication in security context ", e);
+			/*
+			 * If an exception is thrown, log an error and return an internal server error
+			 * response
+			 */
+			String errorMessage = "An internal server error occurred while processing the request to the internal API endpoint.";
+			log.error(errorMessage, e);
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.getWriter().write(errorMessage);
+			return;
 		}
+
+		/* If everything is successful, let the request continue */
 		filterChain.doFilter(request, response);
 	}
 

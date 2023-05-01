@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-
+import { convertToBase64 } from 'src/app/shared/app.utils'
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -57,18 +57,13 @@ export class RegisterComponent implements OnInit {
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        // Get the name of the file
-        const fileType = file.name.split('.').pop();
-        console.log(fileType);
-        // Convert the file data to Base64 and add the filename prefix
-        this.imageBase64 = `${fileType}::` + reader.result?.toString().split(',')[1];
-      };
-    }
+    convertToBase64(file)
+      .then(base64 => {
+        this.imageBase64 = base64;
+      })
+      .catch(error => {
+        console.error(error.error);
+      });
   }
-
 
 }

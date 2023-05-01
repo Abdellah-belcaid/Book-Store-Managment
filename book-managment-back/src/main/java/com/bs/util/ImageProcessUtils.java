@@ -8,7 +8,8 @@ import java.util.Base64;
 
 import io.jsonwebtoken.io.IOException;
 
-public class Utils {
+public class ImageProcessUtils {
+ 
 
 	public static String saveImage(String base64Image, String ImageName) throws IOException {
 		if (base64Image == null)
@@ -67,5 +68,19 @@ public class Utils {
 			throw new IOException("Could not delete image file", e);
 		}
 	}
+	
+	public static String updateImage(String base64Image, String oldImagePath, String newImageName) throws IOException {
+	    // Delete old image
+	    if (oldImagePath != null) {
+	        boolean isDeleted = ImageProcessUtils.deleteImage(oldImagePath);
+	        if (!isDeleted) {
+	            throw new IOException("Could not delete old image file");
+	        }
+	    }
+	    // Save new image
+	    String newImagePath = ImageProcessUtils.saveImage(base64Image, newImageName);
+	    return newImagePath;
+	}
+
 
 }

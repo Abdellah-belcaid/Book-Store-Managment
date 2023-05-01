@@ -14,7 +14,7 @@ import { AlertMessages } from 'src/app/shared/app.utils';
 })
 export class EditAuthorModalComponent {
 
-  public EditedAuthor!: Author;
+  public editedAuthor!: Author;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -23,21 +23,19 @@ export class EditAuthorModalComponent {
     private snackBar: MatSnackBar
   ) {
     console.log(data); // Log the passed data
-    this.EditedAuthor = data;
+    this.editedAuthor = data;
   }
 
   public onEditAuthor(editForm: any): void {
     console.log(editForm.value);
     this.authorService.updateAuthor(editForm.value).subscribe(
       (response: Author) => {
-        console.log(response);
-        AlertMessages(this.snackBar, 'author ' + response.firstName + ' has been edited successfully');
         editForm.reset();
         this.dialogRef.close();
+        AlertMessages(this.snackBar, 'author ' + response.firstName + ' has been edited successfully');
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
-        editForm.reset();
+        AlertMessages(this.snackBar, error);
       }
     );
   }

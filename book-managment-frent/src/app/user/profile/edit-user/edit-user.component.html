@@ -1,0 +1,89 @@
+<mat-card style=" display: flex; flex-direction: column; align-items: center;">
+  <mat-card-header style="display: flex; flex-direction: column; align-items: center;">
+    <mat-icon>account_circle</mat-icon>
+    <mat-card-title>Edit User</mat-card-title>
+  </mat-card-header>
+
+  <form #UserForm="ngForm" (ngSubmit)="onEditUser($event)" class="edit-form">
+
+    <div class="row">
+      <div class="col-3">
+        <div class="row">
+          <div class="flex-shrink-0" style="max-width: 200px;">
+            <img src="data:image/png;base64,{{user.imageData}}" (click)="fileInput.click()" alt="User Image"
+              class="card-img-top img-fluid" style="max-height: 200px; border-radius: 10px;">
+            <input hidden (change)="onFileSelected($event)" #fileInput type="file" id="file">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col">
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" [(ngModel)]="user.name" name="name" required>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" [(ngModel)]="user.email" name="email" required>
+          </mat-form-field>
+        </div>
+
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" required>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>New Password (leave blank to keep the same password)</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="New Password"
+            [(ngModel)]="newPassword" name="newPassword">
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Old Password to Confirm</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Confirm Old Password"
+            [(ngModel)]="oldPassword" name="oldPassword">
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+          <div *ngIf="errorMessage" class="error-message mx-auto">{{ errorMessage }}</div>
+        </div>
+      </div> -->
+
+
+      <div class="row">
+        <mat-card-actions>
+          <button mat-button color="primary" type="submit" [disabled]="UserForm.invalid">Submit</button>
+          <button mat-button type="reset">Reset</button>
+        </mat-card-actions>
+      </div>
+
+    </div>
+  </form>
+</mat-card>

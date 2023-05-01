@@ -13,29 +13,25 @@ import { AlertMessages } from 'src/app/shared/app.utils';
   styleUrls: ['./add-author-modal.component.css']
 })
 export class AddAuthorModalComponent {
+  public newAuthor: Author = new Author();
 
   constructor(private authorService: AuthorService,
     public dialogRef: MatDialogRef<AddAuthorModalComponent>,
     private snackBar: MatSnackBar
   ) { }
 
-  // New author object
-  public newAuthor: Author = new Author();
-
   public onAddAuthor(authorForm: any): void {
     console.log(authorForm.value);
     this.authorService.addAuthor(authorForm.value).subscribe(
       (response: Author) => {
-        console.log(response);
         authorForm.reset();
         this.dialogRef.close();
+        AlertMessages(this.snackBar, "new author :" + response.firstName + "  has been added !");
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
         authorForm.reset();
+        AlertMessages(this.snackBar, error);
       }
     );
   }
-
-
 }

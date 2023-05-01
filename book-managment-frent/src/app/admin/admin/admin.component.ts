@@ -17,6 +17,7 @@ import { AlertMessages } from 'src/app/shared/app.utils';
   styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent {
+
   public Users: User[] = [];
   public Books: Book[] = [];
   public Authors: Author[] = [];
@@ -28,7 +29,7 @@ export class AdminComponent {
   AuthorChange: number = 0;
 
   constructor(
-    private UserServices: UserService,
+    private userServices: UserService,
     private snackBar: MatSnackBar,
     private purchaseService: PurchaseService,
     private authorService: AuthorService,
@@ -36,7 +37,7 @@ export class AdminComponent {
   ) { }
 
   ngOnInit(): void {
-    this.onGetUsers();
+    this.getUsers();
     this.getPurchases();
     this.getAuthors();
     this.getBooks();
@@ -49,7 +50,7 @@ export class AdminComponent {
         this.Authors = authors;
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
+        AlertMessages(this.snackBar, error);
       }
     );
   }
@@ -61,11 +62,10 @@ export class AdminComponent {
         this.BookChange = Book.calculateBookChange(books);
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
+        AlertMessages(this.snackBar, error);
       }
     );
   }
-
 
   private getPurchases(): void {
     this.purchaseService.getAllPurchaseItems().subscribe(
@@ -74,43 +74,56 @@ export class AdminComponent {
         this.purchaseChange = Purchase.calculatePurchaseChange(purchases);
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
+        AlertMessages(this.snackBar, error);
         console.log(error);
       }
     );
   }
 
 
-  private onGetUsers(): void {
-    this.UserServices.getUsers().subscribe(
+  private getUsers(): void {
+    this.userServices.getUsers().subscribe(
       (users: User[]) => {
         this.Users = users;
-        console.log(users);
         this.userChange = User.calculateUserChange(users);
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
+        AlertMessages(this.snackBar, error);
         console.log(error);
       }
     );
   }
 
 
-  openEditModal(user: User) {
-    console.log(user);
-  }
-
-  onDeleteUser(userId: number) {
-    this.UserServices.deleteUser(userId).subscribe(
-      (response: any) => {
-        this.onGetUsers();
-        console.log(response);
+  deleteUser(userId: number) {
+    this.userServices.deleteUser(userId).subscribe(
+      () => {
+        this.getUsers();
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
+        AlertMessages(this.snackBar, error);
         console.log(error);
       }
     );
   }
+
+
+  makeAdmin(username: string) {
+    var secretKey = prompt("Please enter the secret key to make this user an admin:");
+    console.log(secretKey);
+    if (secretKey != null && secretKey !== "") {
+      this.userServices.changeUserRole(username, secretKey).subscribe(
+        (response: any) => {
+          this.getUsers();
+          AlertMessages(this.snackBar, response.message);
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          AlertMessages(this.snackBar, error);
+        }
+      );
+    }
+  }
+
 
 }

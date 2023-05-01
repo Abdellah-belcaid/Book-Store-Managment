@@ -1,16 +1,20 @@
 package com.bs.service.impl;
 
+import com.bs.dao.UserDTO;
+import com.bs.exception.UserNotFoundException;
 import com.bs.model.Role;
 import com.bs.model.User;
 import com.bs.repository.IUserRepository;
 import com.bs.service.IUserService;
-import com.bs.util.Utils;
+import com.bs.util.ConvertorUtils;
+import com.bs.util.ImageProcessUtils;
 import io.jsonwebtoken.io.IOException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +44,7 @@ public class UserService implements IUserService {
 		user.setCreateTime(LocalDateTime.now());
 
 		if (imageFile != null && !imageFile.isEmpty()) {
-			String path = Utils.saveImage(imageFile, user.getUsername());
+			String path = ImageProcessUtils.saveImage(imageFile, user.getUsername());
 			user.setImage_Path(path);
 		}
 
@@ -58,9 +62,10 @@ public class UserService implements IUserService {
 
 		return userList.stream().map(user -> {
 			Map<String, Object> response = new java.util.HashMap<>();
+			UserDTO userDTO = ConvertorUtils.convertUserToDto(user);
 			try {
-				String base64Image = Utils.loadImageAsBase64(user.getImage_Path());
-				response.put("user", user);
+				String base64Image = ImageProcessUtils.loadImageAsBase64(user.getImage_Path());
+				response.put("user", userDTO);
 				response.put("imageData", base64Image);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -70,31 +75,60 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public User getUserById(Long id) {
-		return userRepository.findById(id).orElse(null);
+	public Optional<User> getUserById(Long id) {
+		return userRepository.findById(id);
 	}
 
 	@Transactional
 	@Override
-	public void makeAdmin(String username) {
-		userRepository.updateUserRole(username, Role.ADMIN);
+	public Role makeAdmin(String username) throws UserNotFoundException {
+		Optional<User> expectedUser = userRepository.findByUsername(username);
+		if (expectedUser.isPresent()) {
+			Role role = expectedUser.get().getRole().equals(Role.USER) ? Role.ADMIN : Role.USER;
+			userRepository.updateUserRole(username, role);
+			return role;
+		}
+		throw new UserNotFoundException("User not found");
 	}
 
 	@Override
-	public User updateUser(Long id, User user) {
-		User existingUser = userRepository.findById(id).orElse(null);
-		if (existingUser == null) {
-			return null;
+	public ResponseEntity<?> updateUser(User oldUser, User newUser, String oldPassword, String imageFile) {
+		if (!passwordEncoder.matches(oldPassword, oldUser.getPassword())) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Incorrect old password");
 		}
-		if (userRepository.existsByUsername(user.getUsername())
-				&& !existingUser.getUsername().equals(user.getUsername())) {
-			return null;
+		try {
+
+			/*
+			 * Use Optional.ofNullable to check if the newUser has a non-null password
+			 * field. If it does, encode it using the passwordEncoder object. If it doesn't,
+			 * use the oldUser's password field.
+			 */
+			String password = Optional.ofNullable(newUser.getPassword()).filter(p -> !p.equals("undefined")) // Filter
+																												// out
+																												// "undefined"
+																												// strings
+					.map(passwordEncoder::encode).orElse(oldUser.getPassword());
+
+			/*
+			 * Use Optional.ofNullable to check if the imageFile is null or not. If it's not
+			 * null, call the updateImage method to update the image path. If it's null,
+			 * don't update the image path.
+			 */
+			String newImagePath = Optional.ofNullable(imageFile).filter(p -> !p.equals("undefined")) // Filter out
+																										// "undefined"
+																										// strings
+					.map(file -> ImageProcessUtils.updateImage(file, oldUser.getImage_Path(), newUser.getName()))
+					.orElse(oldUser.getImage_Path());
+
+			oldUser.setEmail(newUser.getEmail());
+			oldUser.setPassword(password);
+			oldUser.setImage_Path(newImagePath);
+			oldUser.setUsername(newUser.getUsername());
+			User savedUser = userRepository.save(oldUser);
+			return ResponseEntity.ok(ConvertorUtils.convertUserToDto(savedUser));
+		} catch (IOException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not update user image");
 		}
-		existingUser.setName(user.getName());
-		existingUser.setEmail(user.getEmail());
-		existingUser.setUsername(user.getUsername());
-		existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
-		return userRepository.save(existingUser);
 	}
 
 	@Transactional
@@ -109,7 +143,7 @@ public class UserService implements IUserService {
 			String imagePath = user.getImage_Path();
 			if (imagePath != null) {
 				// Delete user image file
-				Utils.deleteImage(imagePath);
+				ImageProcessUtils.deleteImage(imagePath);
 			}
 			userRepository.delete(user);
 			return HttpStatus.NO_CONTENT;

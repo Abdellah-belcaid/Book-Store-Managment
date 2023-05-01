@@ -1,9 +1,10 @@
 package com.bs.service;
 
+import com.bs.dao.UserDTO;
 import com.bs.model.User;
 
 public interface IAuthenticationService {
 
-	User signInAndReturnJWT(User SignInRequest);
+	UserDTO signInAndReturnJWT(User SignInRequest);
 
 }

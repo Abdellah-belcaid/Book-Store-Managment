@@ -7,6 +7,7 @@ export class Book {
   publishDate: Date;
   amount: number;
   author: Author;
+  favorite: Boolean = false;
 
   /**
  * Calculates the percentage change in the number of books between the current month and the previous month.

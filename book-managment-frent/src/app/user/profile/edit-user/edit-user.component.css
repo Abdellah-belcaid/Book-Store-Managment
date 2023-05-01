@@ -1,0 +1,20 @@
+.error-message {
+  color: red;
+}
+
+.edit-form {
+  padding: 20px;
+}
+.card {
+  width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.full-width {
+  margin: auto;
+  width: 100%;
+}
+
+
+

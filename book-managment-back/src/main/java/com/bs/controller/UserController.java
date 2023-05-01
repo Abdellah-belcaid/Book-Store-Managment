@@ -2,6 +2,7 @@ package com.bs.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import com.bs.model.User;
 import com.bs.service.IUserService;
 
+import io.jsonwebtoken.io.IOException;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -25,19 +28,22 @@ public class UserController {
 		return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable Long id) {
-		User user = userService.getUserById(id);
-		if (user == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
-
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-		return new ResponseEntity<User>(userService.updateUser(id, user), HttpStatus.OK);
-
+	public ResponseEntity<?> updateUser(@PathVariable("id") Long id,
+			@Nullable @RequestParam("imageFile") String imageFile,
+			@Nullable @RequestParam("oldPassword") String oldPassword, @ModelAttribute User user) {
+				
+		Optional<User> existingUser = userService.getUserById(id);
+		if (existingUser.isPresent()) {
+			try {
+				User oldUser = existingUser.get();
+				return userService.updateUser(oldUser, user, oldPassword, imageFile);
+			} catch (IOException e) {
+				return new ResponseEntity<>("Could not update user image", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} else {
+			return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@DeleteMapping("/{id}")

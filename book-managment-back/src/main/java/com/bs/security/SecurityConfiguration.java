@@ -36,8 +36,8 @@ class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // Enable Cross-Origin Resource Sharing (CORS)
-        http.cors(withDefaults());
+		// Enable Cross-Origin Resource Sharing (CORS)
+		http.cors(withDefaults());
 		// Disable Cross-Site Request Forgery (CSRF)
 		http.csrf().disable();
 		// Set the session creation policy to stateless
@@ -52,7 +52,8 @@ class SecurityConfiguration {
 				// Allow authenticated requests to the purchase history endpoints for users and
 				// admins
 				.requestMatchers("/api/purchase-history", "/api/purchase-history/**")
-				.hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+				.hasAnyRole(Role.USER.name(), Role.ADMIN.name()).requestMatchers(HttpMethod.PUT, "/api/users/**").permitAll()
+				//.hasAnyRole(Role.USER.name(), Role.ADMIN.name())
 				// Allow authenticated requests to the books, authors, and users endpoints for
 				// admins only
 				.requestMatchers("/api/books/**", "/api/authors/**", "/api/users", "/api/users/**")

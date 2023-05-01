@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bs.dao.UserDTO;
 import com.bs.model.User;
 import com.bs.service.IAuthenticationService;
 import com.bs.service.IUserService;
-import com.bs.util.Utils;
+import com.bs.util.ImageProcessUtils;
 
 import io.jsonwebtoken.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class AuthenticationController {
 	@PostMapping("/sign-up")
 	public ResponseEntity<?> signUp(@RequestParam("imageFile") String imageFile, @ModelAttribute User user) {
 		if (userService.findByUsername(user.getUsername()).isPresent()) {
-			return new ResponseEntity<>("User is already exist ! ",HttpStatus.CONFLICT);
+			return new ResponseEntity<>("User is already exist ! ", HttpStatus.CONFLICT);
 		}
 		try {
 			User savedUser = userService.saveUser(user, imageFile);
@@ -43,10 +44,10 @@ public class AuthenticationController {
 
 	@PostMapping("sign-in") // api/authentication/sign-in
 	public ResponseEntity<?> signIn(@RequestBody User user) {
-		User userAuth = authenticationService.signInAndReturnJWT(user);
+		UserDTO userAuth = authenticationService.signInAndReturnJWT(user);
 		String base64Image = null;
 		try {
-			base64Image = Utils.loadImageAsBase64(userAuth.getImage_Path());
+			base64Image = ImageProcessUtils.loadImageAsBase64(userAuth.getImage_Path());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

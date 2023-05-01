@@ -11,6 +11,7 @@ const API_URL = `${environment.apiBaseUrl}/api/authentication/`
 })
 export class AuthenticationService {
 
+
   public currentUser: Observable<User>;
   private currentUserSubject: BehaviorSubject<User>;
 
@@ -53,11 +54,17 @@ export class AuthenticationService {
     formData.append('email', user.email);
     formData.append('imageFile', imageBase64);
 
+    console.log(JSON.stringify(formData));
+
     return this.http.post(API_URL + `sign-up`, formData);
   }
 
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(new User);
+  }
+  setUser(user: User) {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    this.currentUserSubject.next(user);
   }
 }

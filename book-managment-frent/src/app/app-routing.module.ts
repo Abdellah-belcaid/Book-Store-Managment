@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RouterTestingModule } from "@angular/router/testing";
 import { AdminComponent } from './admin/admin/admin.component';
+import { AuthorComponent } from './admin/author/author.component';
+import { BookComponent } from './admin/book/book.component';
 import { NotFoundComponent } from './error/not-found/not-found.component';
 import { UnauthorizedComponent } from './error/unauthorized/unauthorized.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -9,9 +12,6 @@ import { LoginComponent } from './guest/login/login.component';
 import { RegisterComponent } from './guest/register/register.component';
 import { Role } from './models/role.enum';
 import { ProfileComponent } from './user/profile/profile.component';
-import { RouterTestingModule } from "@angular/router/testing";
-import { AuthorComponent } from './admin/author/author.component';
-import { BookComponent } from './admin/book/book.component';
 
 const routes: Routes = [
 

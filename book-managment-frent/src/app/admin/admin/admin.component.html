@@ -37,7 +37,7 @@
                   </div>
                   <div class="col-auto">
                     <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                      <i class="fa fa-edit" ></i>
+                      <i class="fa fa-edit"></i>
                     </div>
                   </div>
                 </div>
@@ -63,10 +63,10 @@
                   </div>
                 </div>
                 <p class="mt-3 mb-0 text-muted text-sm">
-                    <span class="text-{{userChange >= 0 ? 'success' : 'danger'}} mr-2">
-                      <i class="fas fa-arrow-{{userChange >= 0 ? 'up' : 'down'}}"></i>
-                      {{ userChange | number: '1.2-2' }}%
-                    </span>
+                  <span class="text-{{userChange >= 0 ? 'success' : 'danger'}} mr-2">
+                    <i class="fas fa-arrow-{{userChange >= 0 ? 'up' : 'down'}}"></i>
+                    {{ userChange | number: '1.2-2' }}%
+                  </span>
                   <span class="text-nowrap">Since last month</span>
                 </p>
               </div>
@@ -99,9 +99,6 @@
         </div>
       </div>
 
-      <!-- Page content -->
-
-      <!--                         -->
 
       <div class="container-fluid mx-2 my-4">
         <mat-card class="example-card shadow">
@@ -153,9 +150,9 @@
               <ng-container matColumnDef="action">
                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                 <mat-cell *matCellDef="let user">
-                  <button mat-icon-button color="primary" (click)="openEditModal(user)"> <mat-icon>edit</mat-icon>
+                  <button mat-icon-button color="primary" (click)="makeAdmin(user.username)"> <mat-icon>edit</mat-icon>
                   </button>
-                  <button mat-icon-button color="warn" (click)="onDeleteUser(user.id)"> <mat-icon>delete</mat-icon>
+                  <button mat-icon-button color="warn" (click)="deleteUser(user.id)"> <mat-icon>delete</mat-icon>
                   </button>
                 </mat-cell>
               </ng-container>

@@ -1,9 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Book } from 'src/app/models/book.model';
 import { Purchase } from 'src/app/models/purchase.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { BookService } from 'src/app/services/book.service';
 import { PurchaseService } from 'src/app/services/purchase.service';
+import { AlertMessages } from 'src/app/shared/app.utils';
 
 @Component({
   selector: 'app-home',
@@ -15,20 +18,31 @@ export class HomeComponent implements OnInit {
   public books: Book[];
   public errorMessage: string = "";
   public infoMessage: string = "";
-  isLiked = false;
 
   constructor(
     private authenticationService: AuthenticationService,
-    private bookService: BookService,
-    private purchaseService: PurchaseService
+    private bookServices: BookService,
+    private purchaseService: PurchaseService,
+    private snackBar: MatSnackBar
   ) { }
 
 
   ngOnInit(): void {
-    this.bookService.getBooks().subscribe(data => {
-      this.books = data;
-    })
+    this.getBooks();
   }
+
+
+  private getBooks(): void {
+    this.bookServices.getBooks().subscribe(
+      (books: Book[]) => {
+        this.books = books;
+      },
+      (error: HttpErrorResponse) => {
+        AlertMessages(this.snackBar, error);
+      }
+    );
+  }
+
 
   purchase(item: Book) {
     if (!this.authenticationService.currentUserValue?.id) {
@@ -39,15 +53,17 @@ export class HomeComponent implements OnInit {
 
     this.purchaseService.savePurchase(purchase).subscribe(
       data => {
-        this.infoMessage = "Mission is completed";
-        console.log(data);
+        AlertMessages(this.snackBar, "book is added to purchases ");
       },
-      err => {
-        this.errorMessage = "Unexpected error occurred";
+      (err: HttpErrorResponse) => {
         console.log(err);
+        AlertMessages(this.snackBar, err);
       });
   }
 
+  toggleFavorite(book: any) {
+    book.favorite = !book.favorite;
+  }
 
-  
+
 }

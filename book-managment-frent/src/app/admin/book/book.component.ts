@@ -34,7 +34,7 @@ export class BookComponent implements OnInit {
         this.Books = books;
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar,error.message);
+        AlertMessages(this.snackBar, error);
       }
     );
   }
@@ -44,28 +44,26 @@ export class BookComponent implements OnInit {
     this.bookServices.deleteBook(Book_id).subscribe(
       () => {
         this.getBooks();
-        AlertMessages(this.snackBar, 'Book N° ' + Book_id + ' deleted successfully !');
+        AlertMessages(this.snackBar, 'Book N° ' + Book_id + ' has been deleted successfully !');
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar, error.message);
+        AlertMessages(this.snackBar, error);
+        console.log(error);
       }
     );
   }
 
-  public openAddModal(): void {
-    const dialogRef = this.dialog.open(AddBookModalComponent);
+  public onOpenBookModal(book: any, operation: String) {
+    var dialogRef = null as any;
+    if (operation === 'add') {
+      dialogRef = this.dialog.open(AddBookModalComponent);
+    }
+    if (operation === 'edit') {
+      dialogRef = this.dialog.open(EditBookModalComponent, {
+        data: book // passing book data to the dialog component
+      });
+    }
     dialogRef.afterClosed().subscribe(() => {
-      AlertMessages(this.snackBar, 'Book has been added successfully :) ');
-      this.getBooks();
-    });
-  }
-
-  public openEditModal(book: Book): void {
-    const dialogRef = this.dialog.open(EditBookModalComponent, {
-      data: book
-    });
-    dialogRef.afterClosed().subscribe(() => {
-      AlertMessages(this.snackBar, 'Book has been added successfully :) ');
       this.getBooks();
     });
   }
