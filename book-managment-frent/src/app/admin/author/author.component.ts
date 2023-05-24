@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddAuthorModalComponent } from './add-author-modal/add-author-modal.component';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EditAuthorModalComponent } from './edit-author-modal/edit-author-modal.component';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Author } from 'src/app/models/author.model';
 import { AuthorService } from 'src/app/services/author.service';
-import { AlertMessages } from 'src/app/shared/app.utils'
+import { AlertMessages } from 'src/app/shared/app.utils';
+import { AddAuthorModalComponent } from './add-author-modal/add-author-modal.component';
+import { EditAuthorModalComponent } from './edit-author-modal/edit-author-modal.component';
 
 
 @Component({
@@ -14,9 +17,10 @@ import { AlertMessages } from 'src/app/shared/app.utils'
   templateUrl: './author.component.html',
   styleUrls: ['./author.component.css']
 })
-export class AuthorComponent implements OnInit {
+export class AuthorComponent implements OnInit, AfterViewInit {
 
   public Authors!: Author[];
+  dataSource: MatTableDataSource<Author> = new MatTableDataSource();
 
   constructor(
     private authorServices: AuthorService,
@@ -24,41 +28,45 @@ export class AuthorComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   ngOnInit(): void {
-    this.onGetAuthors().then(authors => {
-      this.Authors = authors;
-      console.log(this.Authors);
-    }).catch(error => {
-      AlertMessages(this.snackBar, error);
-    });
+    this.getAuthors();
   }
 
-  public onGetAuthors(): Promise<Author[]> {
-    return new Promise<Author[]>((resolve, reject) => {
-      this.authorServices.getAuthors().subscribe(
-        (response: Author[]) => {
-          this.Authors = response;
-          resolve(response);
-        },
-        (error: HttpErrorResponse) => {
-          AlertMessages(this.snackBar,error);
-        }
-      );
-    });
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
-  public onDeleteAuthor(author_id: number): void {
-    this.authorServices.deleteAuthor(author_id).subscribe(
-      (response: void) => {
-        this.onGetAuthors();
-        AlertMessages(this.snackBar,'Author N° ' + author_id + 'has been deleted successfully !');
+  private getAuthors(): void {
+    this.authorServices.getAuthors().subscribe(
+      (authors: Author[]) => {
+        this.Authors = authors;
+        this.dataSource = new MatTableDataSource(this.Authors);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       },
       (error: HttpErrorResponse) => {
-        AlertMessages(this.snackBar,error);
+        console.log(error);
+        AlertMessages(this.snackBar, error);
       }
     );
   }
 
+
+  public onDeleteAuthor(author_id: number): void {
+    this.authorServices.deleteAuthor(author_id).subscribe(
+      (response: void) => {
+        this.getAuthors();
+        AlertMessages(this.snackBar, 'Author N° ' + author_id + 'has been deleted successfully !');
+      },
+      (error: HttpErrorResponse) => {
+        AlertMessages(this.snackBar, error);
+      }
+    );
+  }
 
   public onOpenAuthorModal(author: any, operation: String) {
     var dialogRef = null as any;
@@ -71,7 +79,7 @@ export class AuthorComponent implements OnInit {
       });
     }
     dialogRef.afterClosed().subscribe(() => {
-      this.onGetAuthors();
+      this.getAuthors();
     });
   }
 

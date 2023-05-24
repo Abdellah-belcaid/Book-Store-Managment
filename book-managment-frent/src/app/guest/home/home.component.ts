@@ -16,8 +16,6 @@ import { AlertMessages } from 'src/app/shared/app.utils';
 export class HomeComponent implements OnInit {
 
   public books: Book[];
-  public errorMessage: string = "";
-  public infoMessage: string = "";
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -46,14 +44,14 @@ export class HomeComponent implements OnInit {
 
   purchase(item: Book) {
     if (!this.authenticationService.currentUserValue?.id) {
-      this.errorMessage = "You should log in to buy a book !"
+      AlertMessages(this.snackBar, "You should Sign in to buy a book !");
       return;
     }
     const purchase = new Purchase(this.authenticationService.currentUserValue.id, item.id, item.price);
 
     this.purchaseService.savePurchase(purchase).subscribe(
       data => {
-        AlertMessages(this.snackBar, "book is added to purchases ");
+        AlertMessages(this.snackBar, "book '"+item.title+"' is added to purchases ");
       },
       (err: HttpErrorResponse) => {
         console.log(err);

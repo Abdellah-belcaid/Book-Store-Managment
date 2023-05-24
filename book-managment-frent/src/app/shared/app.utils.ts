@@ -22,7 +22,6 @@ export function AlertMessages(snackBar: MatSnackBar, message: any): void {
   });
 }
 
-
 export function convertToBase64(file: File): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     if (file) {

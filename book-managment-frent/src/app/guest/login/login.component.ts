@@ -1,7 +1,9 @@
 import { Component, OnInit, NgZone } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AlertMessages } from 'src/app/shared/app.utils';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,
-    private zone: NgZone
+    private zone: NgZone,
+    private snackBar: MatSnackBar
   ) {
     this.user = new User();
     this.errorMessage = '';
@@ -44,17 +47,13 @@ export class LoginComponent implements OnInit {
       this.authenticationService.login(this.user).subscribe(
         data => {
           this.router.navigate(['/profile']);
-          console.log(data);
+          AlertMessages(this.snackBar, "you have logged in successfully :) ");
         },
         err => {
-          if (err.status === 401) {
-            this.errorMessage = 'Invalid username or password!';
-          } else {
-            this.errorMessage = 'An unexpected error occurred. Please try again later.';
-          }
+          AlertMessages(this.snackBar, err);
           console.log(err);
         }
       );
     });
   }
-  }
+}

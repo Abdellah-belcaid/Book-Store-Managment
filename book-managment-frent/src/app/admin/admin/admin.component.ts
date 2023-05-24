@@ -11,22 +11,32 @@ import { PurchaseService } from 'src/app/services/purchase.service';
 import { UserService } from 'src/app/services/user.service';
 import { AlertMessages } from 'src/app/shared/app.utils';
 
+import { AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit, AfterViewInit {
 
   public Users: User[] = [];
   public Books: Book[] = [];
   public Authors: Author[] = [];
   public Purchases: Purchase[] = [];
+  dataSource: MatTableDataSource<User> = new MatTableDataSource();
 
   purchaseChange: number = 0;
   userChange: number = 0;
   BookChange: number = 0;
   AuthorChange: number = 0;
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
 
   constructor(
     private userServices: UserService,
@@ -43,6 +53,10 @@ export class AdminComponent {
     this.getBooks();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
 
   private getAuthors(): void {
     this.authorService.getAuthors().subscribe(
@@ -80,12 +94,14 @@ export class AdminComponent {
     );
   }
 
-
   private getUsers(): void {
     this.userServices.getUsers().subscribe(
       (users: User[]) => {
         this.Users = users;
         this.userChange = User.calculateUserChange(users);
+        this.dataSource = new MatTableDataSource(this.Users);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       },
       (error: HttpErrorResponse) => {
         AlertMessages(this.snackBar, error);
@@ -93,12 +109,12 @@ export class AdminComponent {
       }
     );
   }
-
 
   deleteUser(userId: number) {
     this.userServices.deleteUser(userId).subscribe(
-      () => {
+      (response: any) => {
         this.getUsers();
+        AlertMessages(this.snackBar, "User N° " + userId + " has been deleted successfully ");
       },
       (error: HttpErrorResponse) => {
         AlertMessages(this.snackBar, error);
@@ -107,12 +123,11 @@ export class AdminComponent {
     );
   }
 
-
-  makeAdmin(username: string) {
+  onChangeUserRole(user: User) {
     var secretKey = prompt("Please enter the secret key to make this user an admin:");
     console.log(secretKey);
     if (secretKey != null && secretKey !== "") {
-      this.userServices.changeUserRole(username, secretKey).subscribe(
+      this.userServices.changeUserRole(user.username, secretKey).subscribe(
         (response: any) => {
           this.getUsers();
           AlertMessages(this.snackBar, response.message);

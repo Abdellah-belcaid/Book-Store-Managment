@@ -1,47 +1,54 @@
-<div class="container mt-4">
+<div class="container-xxl mt-2 " >
   <mat-card class="example-card">
     <mat-card-header>
       <mat-card-subtitle>Book List</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <!-- Angular Material table component-->
-      <mat-table [dataSource]="Books">
+      <mat-table [dataSource]="dataSource" matSort>
 
         <!-- Define columns with column definitions using ng-container-->
         <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> ID
+          </mat-header-cell>
           <mat-cell *matCellDef="let book"> {{ book.id }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="title">
-          <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Title
+          </mat-header-cell>
           <mat-cell *matCellDef="let book"> {{ book.title }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="author">
-          <mat-header-cell *matHeaderCellDef> Author </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Author
+          </mat-header-cell>
           <mat-cell *matCellDef="let book"> {{ book.author?.firstName }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="price">
-          <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Price
+          </mat-header-cell>
           <mat-cell *matCellDef="let book"> {{ book.price | currency:'USD'}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="amount">
-          <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Amount
+          </mat-header-cell>
           <mat-cell *matCellDef="let book"> {{ book.amount }} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="publishDate">
-          <mat-header-cell *matHeaderCellDef> Publish Date </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> Publish Date
+          </mat-header-cell>
           <mat-cell *matCellDef="let book"> {{ book.publishDate | date:'mediumDate' }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let book">
-            <button mat-icon-button color="primary" (click)="onOpenBookModal(book,'edit')"> <mat-icon>edit</mat-icon> </button>
+            <button mat-icon-button color="primary" (click)="onOpenBookModal(book,'edit')"> <mat-icon>edit</mat-icon>
+            </button>
             <button mat-icon-button color="warn" (click)="onDeleteBook(book.id)"> <mat-icon>delete</mat-icon> </button>
           </mat-cell>
         </ng-container>
@@ -55,6 +62,9 @@
 
       </mat-table>
     </mat-card-content>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+      aria-label="Select page of periodic elements"></mat-paginator>
 
     <mat-card-footer>
       <mat-card-actions>

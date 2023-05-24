@@ -1,8 +1,9 @@
 import { Component, NgZone, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { convertToBase64 } from 'src/app/shared/app.utils'
+import { AlertMessages, convertToBase64 } from 'src/app/shared/app.utils'
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -17,7 +18,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,
-    private zone: NgZone
+    private zone: NgZone,
+    private snackBar: MatSnackBar
   ) {
     this.user = new User();
     this.errorMessage = '';
@@ -44,14 +46,10 @@ export class RegisterComponent implements OnInit {
         this.zone.run(() => {
           this.router.navigate(['/login']); // Encapsulate navigation in zone.run()
         });
-        console.log(data);
+        AlertMessages(this.snackBar, "User has been regestered successfully");
       }, err => {
-        if (err?.status === 409) {
-          this.errorMessage = "Username already exist !  ";
-        } else {
-          this.errorMessage = "Unexpected error occurred , Error is :  " + err?.errorMessage;
-          console.log(err);
-        }
+        console.log(err);
+        AlertMessages(this.snackBar, err);
       })
   }
 

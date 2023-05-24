@@ -1,14 +1,22 @@
-.book-card {
-  color: darkslategray;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px 0px,
-              rgba(0, 0, 0, 0.14) 0px 1px 1px 0px,
-              rgba(0, 0, 0, 0.12) 0px 2px 1px -1px;
-}
-.red {
-  color: red;
-}
 .favorite {
   color: red;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 250px;
+  /* or any other desired maximum width */
+  max-height: 250px;
+  /* or any other desired height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 600px) {
+  mat-card {
+    max-width: none;
+    height: auto;
+    font-size: auto;
+  }
 }

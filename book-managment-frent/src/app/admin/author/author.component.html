@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container-xxl mt-2">
   <mat-card class="example-card">
     <mat-card-header>
       <mat-card-subtitle>Author List</mat-card-subtitle>
@@ -6,30 +6,30 @@
     </mat-card-header>
 
     <mat-card-content>
-      <mat-table [dataSource]="Authors">
+      <mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
           <mat-cell *matCellDef="let author">{{ author.id }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="firstName">
-          <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
           <mat-cell *matCellDef="let author">{{ author.firstName }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="lastName">
-          <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
           <mat-cell *matCellDef="let author">{{ author.lastName }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="birthDate">
-          <mat-header-cell *matHeaderCellDef>Birth Date</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Birth Date</mat-header-cell>
           <mat-cell *matCellDef="let author">{{ author.birthDate | date }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="address">
-          <mat-header-cell *matHeaderCellDef>Address</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Address</mat-header-cell>
           <mat-cell *matCellDef="let author" title="{{ author.address }}">{{ author.address }}</mat-cell>
         </ng-container>
 
@@ -53,6 +53,8 @@
       </mat-table>
     </mat-card-content>
 
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+      aria-label="Select page of periodic elements"></mat-paginator>
 
     <mat-card-footer>
       <mat-card-actions>
